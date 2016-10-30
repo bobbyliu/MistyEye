@@ -1,0 +1,58 @@
+<Board>
+  <Row>4</Row>
+  <Column>3</Column>
+  <Cards>
+    <Card image_name="1big" group_id="1"/>
+    <Card image_name="1big" group_id="1"/>
+    <Card image_name="2big" group_id="2"/>
+    <Card image_name="2big" group_id="2"/>
+    <Card image_name="3big" group_id="3"/>
+    <Card image_name="3big" group_id="3"/>
+    <Card image_name="4big" group_id="4"/>
+    <Card image_name="4big" group_id="4"/>
+    <Card image_name="5big" group_id="5"/>
+    <Card image_name="5big" group_id="5"/>
+    <Card image_name="6big" group_id="6"/>
+    <Card image_name="6big" group_id="6"/>
+  </Cards>
+  <Groups>
+    <Group ordered="false">
+    	<Items>
+	    	<Item>1</Item>
+	    	<Item>1</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+    	<Items>
+        <Item>2</Item>
+        <Item>2</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+    	<Items>
+        <Item>3</Item>
+        <Item>3</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+      <Items>
+        <Item>4</Item>
+        <Item>4</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+      <Items>
+        <Item>5</Item>
+        <Item>5</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+      <Items>
+        <Item>6</Item>
+        <Item>6</Item>
+      </Items>
+    </Group>
+  </Groups>
+  <TimeLimit>30</TimeLimit>
+  <Formula>formula1</Formula>
+</Board>

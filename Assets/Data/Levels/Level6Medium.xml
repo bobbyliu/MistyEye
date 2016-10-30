@@ -1,0 +1,50 @@
+<Board>
+  <Row>4</Row>
+  <Column>3</Column>
+  <Cards>
+    <Card image_name="8big" group_id="1"/>
+    <Card image_name="29big" group_id="1"/>
+    <Card image_name="15big" group_id="1"/>
+    <Card image_name="2big" group_id="2"/>
+    <Card image_name="9big" group_id="2"/>
+    <Card image_name="16big" group_id="2"/>
+    <Card image_name="18big" group_id="4"/>
+    <Card image_name="25big" group_id="4"/>
+    <Card image_name="11big" group_id="4"/>
+    <Card image_name="27big" group_id="6"/>
+    <Card image_name="6big" group_id="6"/>
+    <Card image_name="13big" group_id="6"/>
+  </Cards>
+  <Groups>
+    <Group ordered="false">
+      <Items>
+        <Item>1</Item>
+        <Item>1</Item>
+        <Item>1</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+      <Items>
+        <Item>2</Item>
+        <Item>2</Item>
+        <Item>2</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+      <Items>
+        <Item>4</Item>
+        <Item>4</Item>
+        <Item>4</Item>
+      </Items>
+    </Group>
+    <Group ordered="false">
+      <Items>
+        <Item>6</Item>
+        <Item>6</Item>
+        <Item>6</Item>
+      </Items>
+    </Group>
+  </Groups>
+  <TimeLimit>30</TimeLimit>
+  <Formula>formulamodule</Formula>
+</Board>

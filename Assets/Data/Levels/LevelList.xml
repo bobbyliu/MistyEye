@@ -1,0 +1,33 @@
+<LevelList>
+  <Levels>28</Levels>
+  <LevelInfos>
+    <LevelInfo level_name="level1" icon_name="level1"/>
+    <LevelInfo level_name="level2" icon_name="level2"/>
+    <LevelInfo level_name="level3" icon_name="level3"/>
+    <LevelInfo level_name="levelreverse" icon_name="level4"/>
+    <LevelInfo level_name="levelcycle" icon_name="level5"/>
+    <LevelInfo level_name="level7" icon_name="level6"/>
+    <LevelInfo level_name="level8" icon_name="level7"/>
+    <LevelInfo level_name="levelstraight" icon_name="level8"/>
+    <LevelInfo level_name="level4" icon_name="level9"/>
+    <LevelInfo level_name="level5" icon_name="level10"/>
+    <LevelInfo level_name="level6medium" icon_name="level11"/>
+    <LevelInfo level_name="levelquotient" icon_name="level12"/>
+    <LevelInfo level_name="level1hard" icon_name="level13"/>
+    <LevelInfo level_name="level2hard" icon_name="level14"/>
+    <LevelInfo level_name="level3hard" icon_name="level15"/>
+    <LevelInfo level_name="levelreversehard" icon_name="level16"/>
+    <LevelInfo level_name="levelcyclehard" icon_name="level17"/>
+    <LevelInfo level_name="level7hard" icon_name="level18"/>
+    <LevelInfo level_name="level8hard" icon_name="level19"/>
+    <LevelInfo level_name="levelstraighthard" icon_name="level20"/>
+    <LevelInfo level_name="level4hard" icon_name="level21"/>
+    <LevelInfo level_name="level5hard" icon_name="level22"/>
+    <LevelInfo level_name="level6extreme" icon_name="level23"/>
+    <LevelInfo level_name="levelquotienthard" icon_name="level24"/>
+    <LevelInfo level_name="levelstraightendless" icon_name="level8"/>
+    <LevelInfo level_name="levelstraightendless2" icon_name="level8"/>
+    <LevelInfo level_name="level4endless" icon_name="level4"/>
+    <LevelInfo level_name="level4endless2" icon_name="level4"/>
+  </LevelInfos>
+</LevelList>

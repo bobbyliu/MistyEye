@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: acd0e60a0216f4612b55e6c0e29afeae
+timeCreated: 1472945242
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - canvas: {fileID: 1000013895048472, guid: eb8dbb26c274d49d4ba3ae43ab8d1dfc, type: 2}
+  - card_prefab: {fileID: 1000013895048472, guid: eb8dbb26c274d49d4ba3ae43ab8d1dfc,
+      type: 2}
+  - UI_Notice: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

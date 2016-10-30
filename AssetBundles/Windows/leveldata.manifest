@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 916661687
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 58fba26b1467e5b43b9fd2ebb844e304
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/Data/Levels/Level5.xml
+- Assets/Data/Levels/Level4.xml
+- Assets/Data/Levels/Level9.xml
+- Assets/Data/Levels/Level6.xml
+- Assets/Data/Levels/LevelList.xml
+- Assets/Data/Levels/Level7.xml
+- Assets/Data/Levels/Level3.xml
+- Assets/Data/Levels/Level1.xml
+- Assets/Data/Levels/Level8.xml
+- Assets/Data/Levels/Level2.xml
+Dependencies: []

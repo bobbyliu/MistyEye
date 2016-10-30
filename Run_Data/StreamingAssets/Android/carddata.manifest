@@ -1,0 +1,43 @@
+ManifestFileVersion: 0
+CRC: 2104392379
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9698bec3252f0ef0415bdb6fafbaf73c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9dea23ffc7e96552740e12d1ee5309d8
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Data/Cards/8big.png
+- Assets/Data/Cards/2big.png
+- Assets/Data/Cards/2.png
+- Assets/Data/Cards/6.png
+- Assets/Data/Cards/groundbig.png
+- Assets/Data/Cards/1.png
+- Assets/Data/Cards/1big.png
+- Assets/Data/Cards/9.png
+- Assets/Data/Cards/background.png
+- Assets/Data/Cards/9big.png
+- Assets/Data/Cards/5.png
+- Assets/Data/Cards/8.png
+- Assets/Data/Cards/4.png
+- Assets/Data/Cards/ground.png
+- Assets/Data/Cards/backgroundbig.png
+- Assets/Data/Cards/3big.png
+- Assets/Data/Cards/0big.png
+- Assets/Data/Cards/APP.png
+- Assets/Data/Cards/5big.png
+- Assets/Data/Cards/0.png
+- Assets/Data/Cards/7.png
+- Assets/Data/Cards/4big.png
+- Assets/Data/Cards/3.png
+- Assets/Data/Cards/NUMBERCARD.png
+- Assets/Data/Cards/7big.png
+- Assets/Data/Cards/6big.png
+Dependencies: []

@@ -1,0 +1,114 @@
+<Board>
+    <Row>6</Row>
+    <Column>6</Column>
+    <Cards>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="1big" group_id="1"/>
+      <Card image_name="2big" group_id="2"/>
+      <Card image_name="2big" group_id="2"/>
+      <Card image_name="2big" group_id="2"/>
+      <Card image_name="2big" group_id="2"/>
+      <Card image_name="2big" group_id="2"/>
+      <Card image_name="2big" group_id="2"/>
+      <Card image_name="2big" group_id="2"/>
+      <Card image_name="3big" group_id="3"/>
+      <Card image_name="3big" group_id="3"/>
+      <Card image_name="3big" group_id="3"/>
+      <Card image_name="3big" group_id="3"/>
+      <Card image_name="3big" group_id="3"/>
+      <Card image_name="3big" group_id="3"/>
+      <Card image_name="4big" group_id="4"/>
+      <Card image_name="4big" group_id="4"/>
+      <Card image_name="4big" group_id="4"/>
+      <Card image_name="4big" group_id="4"/>
+      <Card image_name="4big" group_id="4"/>
+      <Card image_name="5big" group_id="5"/>
+      <Card image_name="5big" group_id="5"/>
+      <Card image_name="5big" group_id="5"/>
+      <Card image_name="5big" group_id="5"/>
+      <Card image_name="6big" group_id="6"/>
+      <Card image_name="6big" group_id="6"/>
+      <Card image_name="6big" group_id="6"/>
+      <Card image_name="7big" group_id="7"/>
+      <Card image_name="7big" group_id="7"/>
+      <Card image_name="8big" group_id="8"/>
+    </Cards>
+    <Groups>
+      <Group ordered="true">
+        <Items>
+          <Item>8</Item>
+          <Item>7</Item>
+          <Item>6</Item>
+          <Item>5</Item>
+          <Item>4</Item>
+          <Item>3</Item>
+          <Item>2</Item>
+          <Item>1</Item>
+        </Items>
+      </Group>
+      <Group ordered="true">
+        <Items>
+          <Item>7</Item>
+          <Item>6</Item>
+          <Item>5</Item>
+          <Item>4</Item>
+          <Item>3</Item>
+          <Item>2</Item>
+          <Item>1</Item>
+        </Items>
+      </Group>
+      <Group ordered="true">
+        <Items>
+          <Item>6</Item>
+          <Item>5</Item>
+          <Item>4</Item>
+          <Item>3</Item>
+          <Item>2</Item>
+          <Item>1</Item>
+        </Items>
+      </Group>
+      <Group ordered="true">
+    		<Items>
+	    		<Item>5</Item>
+	    		<Item>4</Item>
+          <Item>3</Item>
+          <Item>2</Item>
+          <Item>1</Item>
+        </Items>
+    	</Group>
+      <Group ordered="true">
+        <Items>
+          <Item>4</Item>
+          <Item>3</Item>
+          <Item>2</Item>
+          <Item>1</Item>
+        </Items>
+      </Group>
+      <Group ordered="true">
+        <Items>
+          <Item>3</Item>
+          <Item>2</Item>
+          <Item>1</Item>
+        </Items>
+      </Group>
+      <Group ordered="true">
+        <Items>
+          <Item>2</Item>
+          <Item>1</Item>
+        </Items>
+      </Group>
+      <Group ordered="true">
+        <Items>
+          <Item>1</Item>
+        </Items>
+      </Group>
+    </Groups>
+  <TimeLimit>120</TimeLimit>
+  <Formula>formula8</Formula>
+</Board>

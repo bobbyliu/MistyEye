@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 1788342584
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: leveldata
+      Dependencies: {}
+    Info_1:
+      Name: carddata
+      Dependencies: {}
