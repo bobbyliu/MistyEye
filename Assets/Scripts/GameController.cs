@@ -92,6 +92,9 @@ public class Board
     [XmlElement("Formula")]
     public string formula_image_name_;
 
+    [XmlElement("BackgroundPrefix")]
+    public string background_image_prefix_;
+
     public enum Mode {
         NORMAL,
         ENDLESS1,
@@ -160,6 +163,8 @@ public class GameController : MonoBehaviour {
     public int endless_cycle = 0;
     public int endless_score = 0;
 
+    public GameObject show_success_menu_button;
+
     void Start()
     {
         StartCoroutine(LoadLevel(Sticky.CurrentLevelName));
@@ -194,6 +199,10 @@ public class GameController : MonoBehaviour {
         for (int i = 0; i < board.Row * board.Column; i++)
         {
             Sticky.LoadSpriteAsync("carddata", board.cards_info_[i].image_name_);
+            if (board.background_image_prefix_ != null)
+            {
+                Sticky.LoadSpriteAsync("leveldata", board.background_image_prefix_ + "_" + (i + 1));
+            }
         }
     }
 
@@ -293,7 +302,7 @@ public class GameController : MonoBehaviour {
 
     void LevelComplete()
     {
-        GameClear();
+//        GameClear();
         endless_cycle++;
         if (board.PlayMode != Board.Mode.NORMAL)
         {
@@ -306,7 +315,18 @@ public class GameController : MonoBehaviour {
                 Sticky.UnlockedLevels.Add(Sticky.CurrentLevel + 1);
                 Sticky.Save();
             }
-            ShowMenu("Congratulations!", CentralMenu.State.SUCCESS);
+            timer_on_ = false;
+            if (board.background_image_prefix_ != null)
+            {
+                foreach (var item in cards_)
+                {
+                    item.Move();
+                }
+            }
+            else
+            {
+                ShowSuccessMenu();
+            }
         }
     }
 
@@ -426,13 +446,15 @@ public class GameController : MonoBehaviour {
 				new_card.transform.SetParent (playground.transform, false);
                 new_card.GetComponent<RectTransform>().sizeDelta = new Vector2(card_size_, card_size_);
 				new_card.transform.localPosition = 
-					new Vector3 ((float)((i-(board.Column / 2.0-0.5))* (card_size_ + card_gap_)), (float)((j-(board.Row / 2.0-0.5))* (card_size_ + card_gap_)), 0);
+					new Vector3 ((float)((i-(board.Column / 2.0-0.5))* (card_size_ + card_gap_)), (float)(((board.Row - j - 1) - (board.Row / 2.0-0.5))* (card_size_ + card_gap_)), 0);
 
                 var new_cardcontroller = new_card.GetComponentInChildren<CardController>();
                 new_cardcontroller.image_name_ = cards_info_[index].image_name_;
                 new_cardcontroller.master = this;
                 new_cardcontroller.id_ = index;
                 new_cardcontroller.this_button_ = new_card;
+                new_cardcontroller.target =
+                    new Vector3((float)((i - (board.Column / 2.0 - 0.5)) * (card_size_)), (float)(((board.Row-j-1) - (board.Row / 2.0 - 0.5)) * (card_size_)), 0);
 
                 while ((new_cardcontroller.face_ = Sticky.GetSprite("carddata", new_cardcontroller.image_name_))
                         == null)
@@ -440,7 +462,19 @@ public class GameController : MonoBehaviour {
                     yield return new WaitForEndOfFrame();
                 }
                 new_cardcontroller.back_ = card_back;
-                new_cardcontroller.blank_ = card_blank;
+
+                if (board.background_image_prefix_ != null)
+                {
+                    while ((new_cardcontroller.blank_ = Sticky.GetSprite("leveldata", board.background_image_prefix_ + "_" + (index+1)))
+                            == null)
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                }
+                else
+                {
+                    new_cardcontroller.blank_ = card_blank;
+                }
 
                 new_card.GetComponentInChildren<CardController> ().SetImage(card_back);
 				cards_.Add (new_card.GetComponentInChildren<CardController> ());
@@ -467,6 +501,12 @@ public class GameController : MonoBehaviour {
         central_menu.GetComponentInChildren<CentralMenu>().Show(
             notice_text, state);
         central_menu.SetActive(true);
+    }
+
+    public void ShowSuccessMenu()
+    {
+        ShowMenu("Congratulations!", CentralMenu.State.SUCCESS);
+        show_success_menu_button.SetActive(false);
     }
 
     public void Pause()

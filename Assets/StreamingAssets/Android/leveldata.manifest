@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 711480164
+CRC: 1925724443
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0bd869161144b316709005ad3dbbb8dd
+    Hash: 3cf7c61d3f48e1a373cccbdfb99e8748
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3a86b9bde1b930a56947f720531fa611
@@ -17,21 +17,27 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Data/Levels/Level5Hard.xml
+- Assets/Data/Levels/001_8.png
 - Assets/Data/Levels/Level3Hard.xml
+- Assets/Data/Levels/001_2.png
 - Assets/Data/Levels/Level5.xml
+- Assets/Data/Levels/001_6.png
 - Assets/Data/Levels/formulacycle.png
 - Assets/Data/Levels/Level4.xml
 - Assets/Data/Levels/Level6Extreme.xml
 - Assets/Data/Levels/Level4endless2.xml
 - Assets/Data/Levels/formulaModuleHard.png
 - Assets/Data/Levels/LevelStraight.xml
+- Assets/Data/Levels/001_6_old.png
 - Assets/Data/Levels/formula4.png
+- Assets/Data/Levels/001_12.png
 - Assets/Data/Levels/formulaquotienthard.png
 - Assets/Data/Levels/formula1.png
 - Assets/Data/Levels/Level6.xml
 - Assets/Data/Levels/formulaModule.png
 - Assets/Data/Levels/formula2.png
 - Assets/Data/Levels/Level8Hard.xml
+- Assets/Data/Levels/001_3.png
 - Assets/Data/Levels/formulaquotient.png
 - Assets/Data/Levels/LevelList.xml
 - Assets/Data/Levels/formula7.png
@@ -51,6 +57,7 @@ Assets:
 - Assets/Data/Levels/Level1.xml
 - Assets/Data/Levels/formulastraighthard.png
 - Assets/Data/Levels/formula5Hard.png
+- Assets/Data/Levels/001_4.png
 - Assets/Data/Levels/LevelCycleHard.xml
 - Assets/Data/Levels/LevelReverse.xml
 - Assets/Data/Levels/formulastraightextreme.png
@@ -58,15 +65,22 @@ Assets:
 - Assets/Data/Levels/Level7Hard.xml
 - Assets/Data/Levels/Level6Medium.xml
 - Assets/Data/Levels/formula3.png
+- Assets/Data/Levels/001_5.png
+- Assets/Data/Levels/001_7.png
 - Assets/Data/Levels/LevelQuotientHard.xml
 - Assets/Data/Levels/formula4Hard.png
 - Assets/Data/Levels/LevelStraightEndless.xml
 - Assets/Data/Levels/LevelStraightHard.xml
 - Assets/Data/Levels/formula5.png
 - Assets/Data/Levels/formulastraight.png
+- Assets/Data/Levels/001_11.png
 - Assets/Data/Levels/Level2.xml
 - Assets/Data/Levels/Level4Hard.xml
 - Assets/Data/Levels/LevelStraightEndless2.xml
 - Assets/Data/Levels/LevelQuotient.xml
+- Assets/Data/Levels/001_7_old.png
+- Assets/Data/Levels/001_9.png
+- Assets/Data/Levels/001_10.png
+- Assets/Data/Levels/001_1.png
 - Assets/Data/Levels/Level6Hard.xml
 Dependencies: []

@@ -55,4 +55,5 @@
   </Groups>
   <TimeLimit>30</TimeLimit>
   <Formula>formula1</Formula>
+  <BackgroundPrefix>001</BackgroundPrefix>
 </Board>

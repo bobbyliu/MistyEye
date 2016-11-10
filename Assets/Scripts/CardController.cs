@@ -68,4 +68,34 @@ public class CardController : MonoBehaviour {
     {
         Destroy(this_button_);
     }
+
+    private bool is_moving;
+    public Vector3 target;
+    private Vector3 speed;
+    public void Move()
+    {
+        is_moving = true;
+        Vector3 current_position = this_button_.transform.localPosition;
+        speed = (target - current_position) / 2.0f; // 2s to go there.
+    }
+
+    void Update()
+    {
+        if (is_moving)
+        {
+            Vector3 current_position = this_button_.transform.localPosition;
+            float dist = Vector3.Distance(current_position, target);
+            if (dist < speed.magnitude * Time.deltaTime)
+            {
+                this_button_.transform.localPosition = target;
+                is_moving = false;
+                master.show_success_menu_button.SetActive(true);
+            }
+            else
+            {
+                Vector3 new_position = current_position + speed * Time.deltaTime;
+                this_button_.transform.localPosition = new_position;
+            }
+        }
+    }
 }
