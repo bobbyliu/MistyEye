@@ -3,133 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Serialization;
-using System.IO;
-using AssetBundles;
 using UnityEngine.SceneManagement;
-
-public class CardInfo {
-	[XmlAttribute("image_name")]
-	public string image_name_;
-	[XmlAttribute("group_id")]
-	public int group_index_;
-}
-
-public class GroupInfo {
-	[XmlArray("Items"),XmlArrayItem("Item")]
-	public List<int> index_list_;
-	[XmlAttribute("ordered")]
-	public bool in_order_; // Ignored for now.
-
-	public GroupInfo() {}
-
-	public GroupInfo(List<int> index_list) {
-		index_list_ = index_list;
-	}
-
-	public enum MatchStatus {
-		NOT_MATCH,
-		PARTIAL_MATCH,
-		FULL_MATCH
-	}
-
-	// Assume income without the last element is a partial match. 
-	public MatchStatus IncrementalMatch(List<int> income) {
-		int last_element = income [income.Count - 1];
-        bool is_partial_match;
-        if (in_order_)
-        {
-            is_partial_match = (index_list_[income.Count - 1] == last_element);
-        }
-        else
-        {
-            int count = 0;
-            for (int i = 0; i < index_list_.Count; i++)
-            {
-                if (index_list_[i] == last_element)
-                {
-                    count++;
-                }
-            }
-
-            for (int i = 0; i < income.Count; i++)
-            {
-                if (income[i] == last_element)
-                {
-                    count--;
-                }
-            }
-            is_partial_match = (count >= 0);
-        }
-
-		if (!is_partial_match) {
-			return MatchStatus.NOT_MATCH;
-		} else if (income.Count < index_list_.Count) {
-			return MatchStatus.PARTIAL_MATCH;
-		} else {
-			return MatchStatus.FULL_MATCH;
-		}
-	}
-}
-
-[XmlRoot("Board")]
-public class Board
-{
-	[XmlElement("Row")]
-	public int Row;
-	public int Column;
-
-	[XmlArray("Cards"),XmlArrayItem("Card")]
-	public List<CardInfo> cards_info_;
-
-	[XmlArray("Groups"),XmlArrayItem("Group")]
-	public List<GroupInfo> groups_info_;
-
-    [XmlElement("TimeLimit")]
-    public float TimeLimit;
-
-    [XmlElement("Formula")]
-    public string formula_image_name_;
-
-    [XmlElement("BackgroundPrefix")]
-    public string background_image_prefix_;
-
-    public enum Mode {
-        NORMAL,
-        ENDLESS1,
-        ENDLESS2
-    }
-
-    [XmlElement("Mode")]
-    public Mode PlayMode = Mode.NORMAL;
-
-	public void Save(string path)
-	{
-		var serializer = new XmlSerializer(typeof(Board));
-		using(var stream = new FileStream(path, FileMode.Create))
-		{
-			serializer.Serialize(stream, this);
-		}
-	}
-
-	public static Board Load(string path)
-	{
-		var serializer = new XmlSerializer(typeof(Board));
-		using(var stream = new FileStream(path, FileMode.Open))
-		{
-			return serializer.Deserialize(stream) as Board;
-		}
-	}
-
-	public static Board Load(TextAsset asset) {
-		var serializer = new XmlSerializer(typeof(Board));
-		using(var reader = new System.IO.StringReader(asset.text))
-		{
-			return serializer.Deserialize(reader) as Board;
-		}
-	}
-}
 
 public class GameController : MonoBehaviour {
 	public GameObject canvas;
@@ -141,6 +15,7 @@ public class GameController : MonoBehaviour {
     public Text central_notify;
     public GameObject formula;
     public Text scoreboard;
+    public AudioController se_player;
 
     public Board board;
     private float card_size_;
@@ -261,18 +136,23 @@ public class GameController : MonoBehaviour {
 	IEnumerator CheckStatusCoroutine (int id) {
 		previous_ids_.Add (id);
 		previous_clicks_.Add (cards_info_[id].group_index_);
+
+        int sound_status = 0;
 		for (int i = 0; i < available_groups_.Count; i++) {
 			GroupInfo.MatchStatus status = 
 				groups_info_ [available_groups_ [i]].IncrementalMatch (previous_clicks_);
 			if (status == GroupInfo.MatchStatus.PARTIAL_MATCH) {
-				// Do nothing
-			}
-			if (status == GroupInfo.MatchStatus.NOT_MATCH) {
-				available_groups_.RemoveAt (i);
+                // Partial match, do nothing
+            }
+            else if (status == GroupInfo.MatchStatus.NOT_MATCH) {
+                // Set so far does not match any possibilities
+                available_groups_.RemoveAt (i);
 				i--;
 			}
-			if (status == GroupInfo.MatchStatus.FULL_MATCH) {
-                // Found match
+            else if (status == GroupInfo.MatchStatus.FULL_MATCH) {
+                // Set is one of the sets specified
+                se_player.PlayPop();
+                sound_status = 1;
                 yield return new WaitForSeconds(0.25f);
                 groups_info_.RemoveAt (available_groups_ [i]);
 				for (int j = 0; j < previous_ids_.Count; j++) {
@@ -291,12 +171,17 @@ public class GameController : MonoBehaviour {
 
 		if (available_groups_.Count == 0) {
             // No match.
-			yield return new WaitForSeconds(0.25f);
+            se_player.PlayDisappear();
+            sound_status = 2;
+            yield return new WaitForSeconds(0.25f);
 			for (int i = 0; i < previous_ids_.Count; i++) {
 				cards_ [previous_ids_ [i]].FlipBack ();
 			}
 			ResetPrevious ();
 		}
+        if (sound_status == 0) {
+            se_player.PlayClick();
+        }
         CardsActive--;
     }
 

@@ -72,6 +72,8 @@
     <Compile Include="Assets\AssetBundleManager\AssetBundleLoadOperation.cs" />
     <Compile Include="Assets\AssetBundleManager\AssetBundleManager.cs" />
     <Compile Include="Assets\AssetBundleManager\Utility.cs" />
+    <Compile Include="Assets\Scripts\AudioController.cs" />
+    <Compile Include="Assets\Scripts\BoardGenerator.cs" />
     <Compile Include="Assets\Scripts\CardController.cs" />
     <Compile Include="Assets\Scripts\CentralMenu.cs" />
     <Compile Include="Assets\Scripts\Fading.cs" />
