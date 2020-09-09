@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-
+/*
 public class GameController : MonoBehaviour {
 	public GameObject canvas;
 	public GameObject card_prefab;
@@ -22,11 +22,11 @@ public class GameController : MonoBehaviour {
 
     private float card_gap_ = (float)10.0;
 
-    private List<CardController> cards_ = new List<CardController>();
+//    private List<CardController> cards_ = new List<CardController>();
 	private List<CardInfo> cards_info_ = new List<CardInfo>();
-	private List<GroupInfo> groups_info_;
+	private List<GroupInfo> groups_info_ = new List<GroupInfo>();
 
-	private List<int> previous_clicks_ = new List<int>();
+    private List<int> previous_clicks_ = new List<int>();
 	private List<int> previous_ids_ = new List<int>();
 	private List<int> available_groups_ = new List<int>();
 
@@ -156,7 +156,7 @@ public class GameController : MonoBehaviour {
                 yield return new WaitForSeconds(0.25f);
                 groups_info_.RemoveAt (available_groups_ [i]);
 				for (int j = 0; j < previous_ids_.Count; j++) {
-					cards_ [previous_ids_ [j]].Fix ();
+//					cards_ [previous_ids_ [j]].Fix ();
 				}
                 ResetPrevious();
                 if (groups_info_.Count == 0)
@@ -175,7 +175,7 @@ public class GameController : MonoBehaviour {
             sound_status = 2;
             yield return new WaitForSeconds(0.25f);
 			for (int i = 0; i < previous_ids_.Count; i++) {
-				cards_ [previous_ids_ [i]].FlipBack ();
+//				cards_ [previous_ids_ [i]].FlipBack ();
 			}
 			ResetPrevious ();
 		}
@@ -249,7 +249,7 @@ public class GameController : MonoBehaviour {
     {
         GameClear();
         Sticky.CurrentLevel++;
-        Sticky.CurrentLevelName = Sticky.level_list.level_infos_[Sticky.CurrentLevel].level_name_;
+//        Sticky.CurrentLevelName = Sticky.level_list.level_infos_[Sticky.CurrentLevel].level_name_;
         StartCoroutine(LoadLevel(Sticky.CurrentLevelName));
         yield break;
     }
@@ -379,25 +379,25 @@ public class GameController : MonoBehaviour {
         timer.text = string.Format("{0:D2}:{1:D2}", timeSpan.Minutes, timeSpan.Seconds);
     }
 
-    void ShowMenu(string notice_text, CentralMenu.State state)
+    void ShowMenu(string notice_text, UIPauseMenu.State state)
     {
         timer_on_ = false;
         CardsActive++;
-        central_menu.GetComponentInChildren<CentralMenu>().Show(
-            notice_text, state);
+//        central_menu.GetComponentInChildren<CentralMenu>().Show(
+//            notice_text, state);
         central_menu.SetActive(true);
     }
 
     public void ShowSuccessMenu()
     {
-        ShowMenu("Congratulations!", CentralMenu.State.SUCCESS);
+//        ShowMenu("Congratulations!", CentralMenu.State.SUCCESS);
         show_success_menu_button.SetActive(false);
     }
 
     public void Pause()
     {
         Debug.Log("Paused!");
-        ShowMenu("Paused!", CentralMenu.State.PAUSE);
+//        ShowMenu("Paused!", CentralMenu.State.PAUSE);
     }
 
     void Update()
@@ -408,9 +408,11 @@ public class GameController : MonoBehaviour {
             if (timer_ <= 0)
             {
                 timer_ = 0.0f;
-                ShowMenu("Time out!", CentralMenu.State.FAIL);
+//                ShowMenu("Time out!", CentralMenu.State.FAIL);
             }
         }
         SetTimer();
     }
 }
+
+    */

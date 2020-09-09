@@ -1,14 +1,22 @@
-﻿using UnityEngine;
+﻿//using GameGlobal;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections;
+using UnityEngine.AddressableAssets;
+using mgr;
 
 public class Title : MonoBehaviour {
     public Canvas canvas;
     public Button full_image;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+        var a = GameGlobal.Instance;
+    }
+
+    // Use this for initialization
+    void Start () {
         float window_width = canvas.GetComponent<RectTransform>().rect.width;
         float window_height = canvas.GetComponent<RectTransform>().rect.height;
 
@@ -24,6 +32,7 @@ public class Title : MonoBehaviour {
         {
             // Portrait
         }
+        Addressables.LoadAssetAsync<Sprite>("Assets/Data/Cards/" + "groundbig.png");
     }
 
     public void LoadMainScene()
@@ -34,7 +43,8 @@ public class Title : MonoBehaviour {
 
     private IEnumerator LoadMainSceneCoroutine()
     {
-        Sticky.LoadTextAssetAsync("leveldata", "levellist");
+        Addressables.LoadAssetAsync<TextAsset>("Assets/Data/Levels/LevelList.json");
+//        Sticky.LoadTextAssetAsync("leveldata", "levellist");
         float fadeTime = this.GetComponent<Fading>().BeginFade(1);
         yield return new WaitForSeconds(fadeTime);
         SceneManager.LoadScene("LevelSelection");

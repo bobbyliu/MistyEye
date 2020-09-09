@@ -1,0 +1,34 @@
+Title Page - done, I think, might need to convert? 
+- Fade effect, double check if is good readability (P3)
+
+
+Level selection page
+- Create UI/View/Manager (Done)
+- Could load levels (Done)
+- Page flip (P2)
+- Adjust UI (P1?)
+
+
+Level page 
+- Setup (Done)
+- Finish (Done)
+- Pause/Exit Button (Done)
+- Undo Button (Done)
+- Timer/Score (Done)
+- Adjust UI (P1)
+- Support number in card (Done, sort of)
+
+
+Level 1
+- Ordered group - w/ randomization (Done)
+- Unordered group support (P1)
+- Open card support (P1)
+- Fill more levels (P2)
+
+Level - Grouping?
+- TieredMatch
+
+Sound Effect (P2)
+Survival Mode (P3)
+Localization Support (P3)
+Payment Support (P3)
