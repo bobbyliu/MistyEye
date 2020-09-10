@@ -1,9 +1,10 @@
 {
-    "levelCount": 4,
+    "levelCount": 5,
     "levelInfo": [
         {"levelName": "Level1", "imageName": "level1.png"},
         {"levelName": "Level2", "imageName": "level2.png"},
         {"levelName": "Level3", "imageName": "level3.png"},
-        {"levelName": "Level3Hard", "imageName": "level3.png"}
+        {"levelName": "Level3Hard", "imageName": "level3.png"},
+        {"levelName": "Level4", "imageName": "level4.png"}
     ]
 }

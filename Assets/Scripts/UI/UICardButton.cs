@@ -42,21 +42,82 @@ public class UICardButton : MonoBehaviour
     public void SetCardAndEnable(int i) //int card_id, string level_image)
     {
         logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
-        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + card_data.imageName).Completed += SelectionImage_Completed;
+
+        if (card_data.cardType == logic.CardData.CardType.MATERIAL)
+        {
+            SetMaterialCardAndEnable(i);
+            return;
+        }
+        if (card_data.cardType == logic.CardData.CardType.TARGET)
+        {
+            SetTargetCardAndEnable(i);
+            return;
+        }
+
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + card_data.imageName).Completed +=
+            (AsyncOperationHandle<Sprite> handle) => {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    selectionImage = handle.Result;
+                    Refresh();
+                }
+            };
         m_cardStatus = CardStatus.NORMAL;
         valueText = card_data.cardValue.ToString();
         cardId = i;
         Refresh();
     }
-    private void SelectionImage_Completed(AsyncOperationHandle<Sprite> handle)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            selectionImage = handle.Result;
-            Refresh();
-        }
-    }
 
+    // TODO: this should not be a separate function.
+    public void SetMaterialCardAndEnable(int i) //int card_id, string level_image)
+    {
+        logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "MaterialBase.png").Completed +=
+            (AsyncOperationHandle<Sprite> handle) => {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    clickableImage = handle.Result;
+                    Refresh();
+                }
+            };
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "MaterialSelected.png").Completed +=
+            (AsyncOperationHandle<Sprite> handle) => {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    selectionImage = handle.Result;
+                    Refresh();
+                }
+            };
+        m_cardStatus = CardStatus.NORMAL;
+        valueText = card_data.cardValue.ToString();
+        cardId = i;
+        Refresh();
+    }
+    public void SetTargetCardAndEnable(int i) //int card_id, string level_image)
+    {
+        logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "TargetBase.png").Completed +=
+            (AsyncOperationHandle<Sprite> handle) => {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    clickableImage = handle.Result;
+                    Refresh();
+                }
+            };
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "TargetBase.png").Completed +=
+            (AsyncOperationHandle<Sprite> handle) => {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    selectionImage = handle.Result;
+                    Refresh();
+                }
+            };
+        m_cardStatus = CardStatus.NORMAL;
+        valueText = card_data.cardValue.ToString();
+        cardId = i;
+        Refresh();
+    }
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -89,7 +150,8 @@ public class UICardButton : MonoBehaviour
         if (m_cardStatus == CardStatus.NORMAL)
         {
             cardButton.GetComponent<Image>().sprite = clickableImage;
-            cardText.text = "";
+            //            cardText.text = "";
+            cardText.text = valueText;
             cardButton.interactable = true;
         }
         else if (m_cardStatus == CardStatus.SELECTED)
