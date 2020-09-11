@@ -78,6 +78,7 @@ public class UIPauseMenu : MonoBehaviour
     public void OnClickNext()
     {
         int current_level = LevelManager.Instance.levelId;
+        LevelManager.Instance.ClearLevel();
         LevelManager.Instance.SetLevel(current_level + 1);
         LevelManager.Instance.LoadLevel();
         MenuManager.Instance.DestroyMenu();

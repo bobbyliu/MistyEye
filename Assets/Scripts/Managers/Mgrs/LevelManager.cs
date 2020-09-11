@@ -26,6 +26,7 @@ namespace mgr
         public event Action onLoadLevelData;
         public event Action<int/*cardId*/> onForceFlipBack;
         public event Action<int/*cardId*/> onRemove;
+        public event Action onClearLevel;
         public event Action onFinish;
 
         private List<int> currentlyFlipped = new List<int>();
@@ -49,6 +50,7 @@ namespace mgr
             pendingCheck = false;
 
             timerState = TimerState.STOPPED;
+            onClearLevel();
         }
 
         public void SetLevel(int i)
@@ -171,8 +173,8 @@ namespace mgr
             Debug.Log("OnRemoveA" + alreadyRemoved[alreadyRemoved.Count - 1].Count);
             if (boardRuleLogic.CheckCompletion(alreadyRemoved))
             {
-                ClearLevel();
                 onFinish();
+//                ClearLevel();
                 // TODO: finish
             }
             pendingCheck = false;

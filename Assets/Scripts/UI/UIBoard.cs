@@ -25,6 +25,7 @@ public class UIBoard : MonoBehaviour
     {
         InitializeCanvas();
 
+        LevelManager.Instance.onClearLevel += ClearBoard;
         LevelManager.Instance.onLoadLevelData += InitializeBoard;
         LevelManager.Instance.LoadLevel();
     }
@@ -33,12 +34,14 @@ public class UIBoard : MonoBehaviour
     {
         if (LevelManager.Instance != null)
         {
+            LevelManager.Instance.onClearLevel -= ClearBoard;
             LevelManager.Instance.onLoadLevelData -= InitializeBoard;
         }
     }
 
     void ClearBoard()
     {
+        Debug.Log("Clear board");
         foreach (var uiCardButton in uiCardButtons)
         {
             Destroy(uiCardButton.gameObject);
@@ -146,7 +149,6 @@ public class UIBoard : MonoBehaviour
 
     void LoadFinishMenu()
     {
-        ClearBoard();
         MenuManager.Instance.CreateMenu(background, "pause_menu");
         MenuManager.Instance.currentMenu.GetComponent<UIPauseMenu>().SetState(UIPauseMenu.State.SUCCESS);
     }

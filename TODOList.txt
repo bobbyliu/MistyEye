@@ -26,7 +26,9 @@ Level 1
 - Fill more levels (P2)
 
 Level - Grouping?
-- TieredMatch
+- TieredMatch (Done)
+- RandomSum (Done)
+- RandomProduct (Done)
 
 Sound Effect (P2)
 Survival Mode (P3)

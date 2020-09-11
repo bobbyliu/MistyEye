@@ -21,15 +21,6 @@ public class UIBoardMenu : MonoBehaviour
         revertButton.onClick.AddListener(UndoRemove);
     }
 
-    private void OnGUI()
-    {
-        Texture2D texture = new Texture2D(128, 128);
-        //绘制一个带图片和文字按钮  
-        GUIContent guic = new GUIContent("按钮", texture);
-        GUI.Button(new Rect(10, 70, 150, 30), guic);
-
-    }
-
     public void Update()
     {
         timerText.text = LevelManager.Instance.GetCurrentTimer();
