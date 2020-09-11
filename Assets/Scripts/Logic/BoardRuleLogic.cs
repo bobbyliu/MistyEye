@@ -98,13 +98,7 @@ namespace logic
 
     public class TargetMatchingLogic : BoardRuleLogicBase
     {
-        private List<List<int>> groups = new List<List<int>>();
-
-        // TODO: maybe useless?
-        private List<int> target_cards = new List<int>();
-
-        // Record a list of groups that have been removed, so that we don't match them in the future. 
-        private List<List<int>> flipped_id = new List<List<int>>();
+        protected int target_count = 0;
 
         public TargetMatchingLogic(LevelData level_data)
             : base(level_data)
@@ -123,16 +117,16 @@ namespace logic
         // Start is called before the first frame update
         public override void Generator(List<int> param)
         {
-            List<int> current_group = new List<int>();
+            int material_count = param[0];
+            target_count = param[1];
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(material_count);
 
-            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(rowCount * columnCount);
-
-            cardDeck = new List<logic.CardData>(new logic.CardData[rowCount * columnCount]);
+            cardDeck = new List<logic.CardData>(new logic.CardData[target_count + material_count]);
             int card_count = 0;
 
             // TODO: change this to card type?
             int phase = 1;
-            for (int i = 0; i < param.Count; i++)
+            for (int i = 2; i < param.Count; i++)
             {
                 if (param[i] != 0)
                 {
@@ -143,8 +137,15 @@ namespace logic
                         imageName = "MaterialBase.png"  // TODO: ugh..
                     };
 
-                    Debug.Log("cardDeck.add " + param[i] + " at " + random_mapping[card_count]);
-                    cardDeck[random_mapping[card_count]] = new_card;
+                    if (phase == 1)
+                    {
+                        Debug.Log("cardDeck.add " + param[i] + " at " + random_mapping[card_count]);
+                        cardDeck[random_mapping[card_count]] = new_card;
+                    } else
+                    {
+                        Debug.Log("cardDeck.add " + param[i] + " at " + card_count);
+                        cardDeck[card_count] = new_card;
+                    }
 
                     card_count++;
                 }
@@ -171,8 +172,6 @@ namespace logic
             }
             if (Calculate(card_value_list) == last_card.cardValue)
             {
-                // Fully matched. 
-                flipped_id.Add(cardsId);
                 return JudgeState.VALID;
             } else
             {
@@ -182,12 +181,186 @@ namespace logic
 
         public override void UndoRemove()
         {
-            flipped_id.RemoveAt(flipped_id.Count - 1);
         }
 
         public override bool CheckCompletion(List<List<int>> already_removed)
         {
-            return already_removed.Count == groups.Count;
+            return already_removed.Count == target_count;
+        }
+    }
+
+    public class TargetSumLogic : TargetMatchingLogic
+    {
+        public TargetSumLogic(LevelData level_data)
+            : base(level_data)
+        { }
+
+        protected override int Calculate(List<int> materials)
+        {
+            int sum = 0;
+            for (int i = 0; i < materials.Count; i++)
+            {
+                sum += materials[i];
+            }
+            return sum;
+        }
+    }
+
+    public class RandomSumLogic : TargetMatchingLogic
+    {
+        public RandomSumLogic(LevelData level_data)
+            : base(level_data)
+        { }
+
+        protected override int Calculate(List<int> materials)
+        {
+            if (materials.Count == 0)
+            {
+                return -1;
+            }
+            int sum = 0;
+            for (int i = 0; i < materials.Count; i++)
+            {
+                sum += materials[i];
+            }
+            return sum;
+        }
+
+        // Start is called before the first frame update
+        public override void Generator(List<int> param)
+        {
+            int material_count = param[0];
+            target_count = param[1];
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(material_count);
+
+            cardDeck = new List<logic.CardData>(new logic.CardData[target_count + material_count]);
+            int material_initialized = 0;
+
+            // TODO: change this to card type?
+            for (int i = 0; i < target_count; i++)
+            {
+                // 2 or 3, basically.
+                int matgroup = UnityEngine.Random.Range(2, 4);
+                if (material_count - material_initialized <= 2 * (target_count - i))
+                {
+                    matgroup = 2;
+                }
+                int partial_sum = 0;
+                for (int j = 0; j < matgroup; j++)
+                {
+                    int temp = UnityEngine.Random.Range(1, 99);
+                    partial_sum += temp;
+                    var new_card = new CardData
+                    {
+                        cardValue = temp,
+                        cardType = CardData.CardType.MATERIAL,
+                        imageName = "MaterialBase.png"  // TODO: ugh..
+                    };
+                    Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
+                    cardDeck[random_mapping[material_initialized]] = new_card;
+                    material_initialized++;
+                }
+                var new_target = new CardData
+                {
+                    cardValue = partial_sum,
+                    cardType = CardData.CardType.TARGET,
+                    imageName = "MaterialBase.png"  // TODO: ugh..
+                };
+                Debug.Log("cardDeck.add " + partial_sum + " at " + (material_count + i));
+                cardDeck[material_count + i] = new_target;
+            }
+            for (int j = material_initialized; j < material_count; j++)
+            {
+                int temp = UnityEngine.Random.Range(1, 99);
+                var new_card = new CardData
+                {
+                    cardValue = temp,
+                    cardType = CardData.CardType.MATERIAL,
+                    imageName = "MaterialBase.png"  // TODO: ugh..
+                };
+                Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
+                cardDeck[random_mapping[material_initialized]] = new_card;
+                material_initialized++;
+            }
+        }
+    }
+
+    public class RandomProductLogic : TargetMatchingLogic
+    {
+        public RandomProductLogic(LevelData level_data)
+            : base(level_data)
+        { }
+
+        protected override int Calculate(List<int> materials)
+        {
+            if (materials.Count == 0)
+            {
+                return -1;
+            }
+            int product = 1;
+            for (int i = 0; i < materials.Count; i++)
+            {
+                product *= materials[i];
+            }
+            return product;
+        }
+
+        // Start is called before the first frame update
+        public override void Generator(List<int> param)
+        {
+            int material_count = param[0];
+            target_count = param[1];
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(material_count);
+
+            cardDeck = new List<logic.CardData>(new logic.CardData[target_count + material_count]);
+            int material_initialized = 0;
+
+            // TODO: change this to card type?
+            for (int i = 0; i < target_count; i++)
+            {
+                // 2 or 3, basically.
+                int matgroup = UnityEngine.Random.Range(2, 4);
+                if (material_count - material_initialized <= 2 * (target_count - i))
+                {
+                    matgroup = 2;
+                }
+                int partial_product = 1;
+                for (int j = 0; j < matgroup; j++)
+                {
+                    int temp = UnityEngine.Random.Range(1, 9);
+                    partial_product *= temp;
+                    var new_card = new CardData
+                    {
+                        cardValue = temp,
+                        cardType = CardData.CardType.MATERIAL,
+                        imageName = "MaterialBase.png"  // TODO: ugh..
+                    };
+                    Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
+                    cardDeck[random_mapping[material_initialized]] = new_card;
+                    material_initialized++;
+                }
+                var new_target = new CardData
+                {
+                    cardValue = partial_product,
+                    cardType = CardData.CardType.TARGET,
+                    imageName = "MaterialBase.png"  // TODO: ugh..
+                };
+                Debug.Log("cardDeck.add " + partial_product + " at " + (material_count + i));
+                cardDeck[material_count + i] = new_target;
+            }
+            for (int j = material_initialized; j < material_count; j++)
+            {
+                int temp = UnityEngine.Random.Range(1, 9);
+                var new_card = new CardData
+                {
+                    cardValue = temp,
+                    cardType = CardData.CardType.MATERIAL,
+                    imageName = "MaterialBase.png"  // TODO: ugh..
+                };
+                Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
+                cardDeck[random_mapping[material_initialized]] = new_card;
+                material_initialized++;
+            }
         }
     }
 }

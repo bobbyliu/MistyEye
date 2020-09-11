@@ -1,7 +1,7 @@
 {
     "rowCount": 4,
     "columnCount": 3,
-    "deckGeneratorParams": [1,2,3,4,5,6,0,1,2,3,4,5,6],
+    "deckGeneratorParams": [6,6,1,2,3,4,5,6,0,1,2,3,4,5,6],
     "boardRuleLogicName": "TargetMatchingLogic",
     "ruleImageName": "formula1.png",
     "backgroundImagePrefix": ""
