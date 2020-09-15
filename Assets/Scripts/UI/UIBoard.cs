@@ -1,21 +1,24 @@
 ﻿using mgr;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.UI;
 
 public class UIBoard : MonoBehaviour
 {
     private const string LEVEL_RULE_ASSET_PREFIX = "Assets/Data/Levels/";
 
     public GameObject cardButtonPrefab;
+    // TODO: change to private serializable?
     public UICardButton[] uiCardButtons;
+    public GridLayoutGroup gridLayoutGroup;
     // TODO: remove all these?
     public GameObject background;
-    private float cardSize;
-    private float borderSize;
-    private float cardGap;
+    private int cardSize;
+    private int cardGap;
     public UIBoardMenu boardMenu;
 
     private bool needInitialize;
@@ -23,8 +26,6 @@ public class UIBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitializeCanvas();
-
         LevelManager.Instance.onClearLevel += ClearBoard;
         LevelManager.Instance.onLoadLevelData += InitializeBoard;
         LevelManager.Instance.LoadLevel();
@@ -54,6 +55,7 @@ public class UIBoard : MonoBehaviour
     void InitializeBoard()
     {
         uiCardButtons = new UICardButton[0];
+        InitializeCanvas();
         InitializeEmptyButtons();
         LoadCardButtons();
         LevelManager.Instance.onForceFlipBack += ForceFlipBack;
@@ -68,7 +70,6 @@ public class UIBoard : MonoBehaviour
                     boardMenu.SetFormulaImage(handle.Result);
                 }
             };
-//        boardMenu.SetFormulaImage();
     }
 
     void ForceFlipBack(int card_id)
@@ -89,23 +90,27 @@ public class UIBoard : MonoBehaviour
     // not sure if this should happen here.
     void InitializeCanvas()
     {
-        float window_width = background.GetComponent<RectTransform>().rect.width;
-        float window_height = background.GetComponent<RectTransform>().rect.height;
+        int max_width = Mathf.RoundToInt(background.GetComponent<RectTransform>().rect.width * 550.0f / 640.0f);
+        int max_height = Mathf.RoundToInt(background.GetComponent<RectTransform>().rect.height * 850.0f / 1136.0f);
+        int row_count = LevelManager.Instance.boardRuleLogic.rowCount;
+        int col_count = LevelManager.Instance.boardRuleLogic.columnCount;
 
-        if (window_width > window_height)
+        if (max_width > max_height)
         {
             // Landscape, ignore
         }
         else
         {
             // Portrait
-            //            float target_height = 820.0f * window_height / 1136.0f;
-            //            float target_width = 550.0f * window_height / 1136.0f;
-            cardSize = 120.0f * window_height / 1136.0f; // change it with respect to card number
-            cardGap = 10.0f * window_height / 1136.0f;
-            //            this.GetComponent<RectTransform>().sizeDelta = new Vector2(target_width, target_height);
-
-            //            menu.GetComponent<RectTransform>().sizeDelta = new Vector2(window_height * 640.0f / 1136.0f, 0.0f);
+            cardSize = Math.Min(max_width / (col_count + 1), max_height / (row_count + 1));
+            cardGap = cardSize / 6;
+            float target_width = cardSize * col_count + cardGap * (col_count + 1);
+            float target_height = cardSize * row_count + cardGap * (row_count + 1);
+            this.GetComponent<RectTransform>().sizeDelta = new Vector2(target_width, target_height);
+            gridLayoutGroup.cellSize = new Vector2(cardSize, cardSize);
+            gridLayoutGroup.spacing = new Vector2(cardGap, cardGap);
+            gridLayoutGroup.constraintCount = col_count;
+            gridLayoutGroup.padding = new RectOffset(cardGap, cardGap, cardGap, cardGap);
         }
     }
     
@@ -125,12 +130,8 @@ public class UIBoard : MonoBehaviour
             // TODO: ???
             new_card.transform.SetParent(gameObject.transform, false);
             new_card.GetComponent<RectTransform>().sizeDelta = new Vector2(cardSize, cardSize);
-            new_card.transform.localPosition =
-                new Vector3((float)((row - (col_count / 2.0 - 0.5)) * (cardSize + cardGap)), (float)((col - (row_count / 2.0 - 0.5)) * (cardSize + cardGap)), 0);
 
             uiCardButtons[i] = new_card.GetComponent<UICardButton>();
-
-            /*            new_cardcontroller.level_id_ = i;*/
         }
         return;
     }

@@ -28,41 +28,34 @@ public class UILevelSelectionButton : MonoBehaviour
     }
 
     public void SetLevelAndEnable(int level_id, string level_image) {
-        Addressables.LoadAssetAsync<Sprite>(ASSET_PREFIX + level_image).Completed += LevelImage_Completed;
+        Addressables.LoadAssetAsync<Sprite>(ASSET_PREFIX + level_image).Completed +=
+            (AsyncOperationHandle<Sprite> handle) =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    clickableImage = handle.Result;
+                    Refresh();
+                }
+            };
         m_isSelectable = true;
         levelId = level_id;
         Refresh();
     }
-    private void LevelImage_Completed(AsyncOperationHandle<Sprite> handle)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            clickableImage = handle.Result;
-            Refresh();
-        }
-    }
 
-    // Start is called before the first frame update
     void Awake()
     {
         isSelectable = false;
-        Addressables.LoadAssetAsync<Sprite>(ASSET_PREFIX + "groundbig.png").Completed += LockedImage_Completed;
-        levelSelector.onClick.AddListener(LoadLevel);
-    }
-    // TODO: there must be a way to merge LevelImage_Completed with LockedImage_Completed.
-    private void LockedImage_Completed(AsyncOperationHandle<Sprite> handle)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            lockedImage = handle.Result;
-            Refresh();
-        }
-    }
+        Addressables.LoadAssetAsync<Sprite>(ASSET_PREFIX + "groundbig.png").Completed +=
+            (AsyncOperationHandle<Sprite> handle) =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    lockedImage = handle.Result;
+                    Refresh();
+                }
+            };
 
-    // Update is called once per frame
-    void Update()
-    {
-        // ???
+        levelSelector.onClick.AddListener(LoadLevel);
     }
 
     void Refresh()
@@ -81,11 +74,6 @@ public class UILevelSelectionButton : MonoBehaviour
 
     public void LoadLevel()
     {
-        // Call GameManager's load game
-        // Load LevelManager somehow
-        //        Sticky.CurrentLevel = level_id_;
-        //        Sticky.CurrentLevelName = level_name_;
-//        LevelManager.Instance.LoadLevel(levelId);
         LevelManager.Instance.SetLevel(levelId);
         SceneManager.LoadScene("Main");
     }

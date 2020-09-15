@@ -17,7 +17,7 @@ public class Title : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        float window_width = canvas.GetComponent<RectTransform>().rect.width;
+/*        float window_width = canvas.GetComponent<RectTransform>().rect.width;
         float window_height = canvas.GetComponent<RectTransform>().rect.height;
 
         float scale = window_width / (float)568;
@@ -32,7 +32,7 @@ public class Title : MonoBehaviour {
         {
             // Portrait
         }
-        Addressables.LoadAssetAsync<Sprite>("Assets/Data/Cards/" + "groundbig.png");
+        Addressables.LoadAssetAsync<Sprite>("Assets/Data/Cards/" + "groundbig.png");*/
     }
 
     public void LoadMainScene()

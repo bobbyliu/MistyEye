@@ -25,6 +25,8 @@ namespace mgr
         public LevelList levelList { get; private set; }
         private bool isReady;
 
+        public event Action onDataLoad;
+
         public bool IsReady()
         {
             return isReady;
@@ -36,19 +38,17 @@ namespace mgr
             base._InitBeforeAwake();
             isReady = false;
 
-            Addressables.LoadAssetAsync<TextAsset>("Assets/Data/Levels/LevelList.json").Completed += LevelList_Completed;
+            Addressables.LoadAssetAsync<TextAsset>("Assets/Data/Levels/LevelList.json").Completed +=
+                (AsyncOperationHandle<TextAsset> handle) => {
+                    if (handle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        levelList = JsonUtility.FromJson<LevelList>(handle.Result.text);
+
+                        isReady = true;
+                        onDataLoad?.Invoke();
+                        // The texture is ready for use.
+                    }
+                };
         }
-
-        private void LevelList_Completed(AsyncOperationHandle<TextAsset> handle)
-        {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                levelList = JsonUtility.FromJson<LevelList>(handle.Result.text);
-
-                isReady = true;
-                // The texture is ready for use.
-            }
-        }
-
     }
 }
