@@ -17,6 +17,10 @@ public class UICardButton : MonoBehaviour
     private Sprite selectionImage;
     private string valueText;
 
+    // TODO: check if we should use this or cardType directly?
+    private bool hideWhenRemoved;
+    private bool showNumberWhenNormal;
+
     [SerializeField] [Tooltip("按钮")] private Button cardButton;
     [SerializeField] [Tooltip("数字")] private Text cardText;
     // Used to pass level loading status.
@@ -46,11 +50,14 @@ public class UICardButton : MonoBehaviour
         if (card_data.cardType == logic.CardData.CardType.MATERIAL)
         {
             SetMaterialCardAndEnable(i);
+            showNumberWhenNormal = false;
             return;
         }
         if (card_data.cardType == logic.CardData.CardType.TARGET)
         {
             SetTargetCardAndEnable(i);
+//            hideWhenRemoved = true;
+            showNumberWhenNormal = true;
             return;
         }
 
@@ -150,9 +157,18 @@ public class UICardButton : MonoBehaviour
         if (m_cardStatus == CardStatus.NORMAL)
         {
             cardButton.GetComponent<Image>().sprite = clickableImage;
-            //            cardText.text = "";
-            cardText.text = valueText;
+            if (showNumberWhenNormal)
+            {
+                cardText.text = valueText;
+            } else
+            {
+                cardText.text = "";
+            }
             cardButton.interactable = true;
+            if (hideWhenRemoved)
+            {
+                gameObject.SetActive(true);
+            }
         }
         else if (m_cardStatus == CardStatus.SELECTED)
         {
@@ -165,6 +181,10 @@ public class UICardButton : MonoBehaviour
             cardButton.GetComponent<Image>().sprite = backgroundImage;
             cardText.text = "";
             cardButton.interactable = false;
+            if (hideWhenRemoved)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 

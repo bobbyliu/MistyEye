@@ -1,8 +1,9 @@
 {
-    "rowCount": 4,
-    "columnCount": 3,
-    "deckGeneratorParams": [6,6,1,2,3,4,5,6,0,1,2,3,4,5,6],
-    "boardRuleLogicName": "TargetMatchingLogic",
-    "ruleImageName": "formula1.png",
+    "rowCount": 3,
+    "columnCount": 4,
+    "targetCount": 6,
+    "deckGeneratorParams": [12,6,1,2,3,4,5,6,7,8,9,10,11,12,0,13,13,13,13,13,13],
+    "boardRuleLogicName": "Sum2Logic",
+    "ruleImageName": "formula4.png",
     "backgroundImagePrefix": ""
 }

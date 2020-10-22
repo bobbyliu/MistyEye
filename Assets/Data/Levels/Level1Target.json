@@ -1,0 +1,9 @@
+{
+    "rowCount": 3,
+    "columnCount": 2,
+    "targetCount": 6,
+    "deckGeneratorParams": [6,6,1,2,3,4,5,6,0,1,2,3,4,5,6],
+    "boardRuleLogicName": "Equal2Logic",
+    "ruleImageName": "formula1.png",
+    "backgroundImagePrefix": ""
+}

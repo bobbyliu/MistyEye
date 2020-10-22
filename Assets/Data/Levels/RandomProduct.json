@@ -1,7 +1,8 @@
 {
-    "rowCount": 5,
+    "rowCount": 4,
     "columnCount": 3,
-    "deckGeneratorParams": [11,4],
+    "targetCount": 6,
+    "deckGeneratorParams": [12,6],
     "boardRuleLogicName": "RandomProductLogic",
     "ruleImageName": "formula1.png",
     "backgroundImagePrefix": ""

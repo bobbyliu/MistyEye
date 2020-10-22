@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace logic
@@ -27,6 +28,7 @@ namespace logic
     {
         public int rowCount;
         public int columnCount;
+        public int targetCount;
 
         public List<int> deckGeneratorParams;
         //        public List<GroupInfo> groups_info_;
@@ -45,6 +47,7 @@ namespace logic
         {
             rowCount = level_data.rowCount;
             columnCount = level_data.columnCount;
+            targetCount = level_data.targetCount;
             Generator(level_data.deckGeneratorParams);
         }
 
@@ -65,6 +68,10 @@ namespace logic
         {
             return JudgeState.VALID;
         }
+        public virtual string GetPartialText(List<int> cardsId)
+        {
+            return string.Join(",", cardsId.Select(id => cardDeck[id].cardValue).ToArray());
+        }
 
         public virtual void UndoRemove() { }
 
@@ -84,6 +91,7 @@ namespace logic
 
         public int rowCount;
         public int columnCount;
+        public int targetCount;
         public List<CardData> cardDeck = new List<CardData>();
     }
 
@@ -108,5 +116,4 @@ namespace logic
             return random_mapping;
         }
     }
-
 }

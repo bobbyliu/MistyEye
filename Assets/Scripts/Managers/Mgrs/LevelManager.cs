@@ -28,6 +28,7 @@ namespace mgr
         public event Action<int/*cardId*/> onRemove;
         public event Action onClearLevel;
         public event Action onFinish;
+        public event Action<string, logic.BoardRuleLogicBase.JudgeState> onUpdatePartialText;
 
         private List<int> currentlyFlipped = new List<int>();
 
@@ -45,6 +46,7 @@ namespace mgr
             boardRuleLogic = null;
             levelData = null;
             alreadyRemoved = new List<List<int>>();
+            currentlyFlipped.Clear();
 
             isReady = false;
             pendingCheck = false;
@@ -131,6 +133,9 @@ namespace mgr
             currentlyFlipped.Add(card_id);
             var status = boardRuleLogic.JudgeAndFlip(currentlyFlipped);
 
+            string partial_text = boardRuleLogic.GetPartialText(currentlyFlipped);
+            onUpdatePartialText(partial_text, status);
+
             Debug.Log("JudgeAndFlip=" + status + "cardId=" + card_id);
             Debug.Log(currentlyFlipped.Count);
             if (status == logic.BoardRuleLogicBase.JudgeState.INVALID)
@@ -195,6 +200,7 @@ namespace mgr
                 onForceFlipBack(cardId);
             }
             currentlyFlipped.Clear();
+            onUpdatePartialText("", logic.BoardRuleLogicBase.JudgeState.PENDING);
 
             foreach (int cardId in alreadyRemoved[alreadyRemoved.Count - 1])
             {

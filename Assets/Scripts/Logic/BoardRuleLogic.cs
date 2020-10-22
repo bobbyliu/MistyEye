@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace logic
@@ -12,7 +13,7 @@ namespace logic
         { }
 
         // Start is called before the first frame update
-        public override void Generator(List<int> param) 
+        public override void Generator(List<int> param)
         {
             List<int> current_group = new List<int>();
 
@@ -27,7 +28,8 @@ namespace logic
                     var new_card = new CardData {
                         cardValue = param[i],
                         cardType = CardData.CardType.SECRET,
-                        imageName = param[i] + ".png"
+                        imageName = "MaterialBase.png"
+//                        imageName = param[i] + ".png"
                     };
 
                     Debug.Log("cardDeck.add " + param[i] + " at " + random_mapping[card_count]);
@@ -109,12 +111,16 @@ namespace logic
         {
             if (materials.Count != 1)
             {
-                return -1;
+                return -1;  // TODO: check if we can return a status.
             }
             return materials[0];
         }
-            
-        // Start is called before the first frame update
+        protected virtual bool PrematureFail(List<int> materials)
+        {
+            return false;
+        }
+
+        // Generator param list: material_count, target_count, {material_list}, 0, {target_list}
         public override void Generator(List<int> param)
         {
             int material_count = param[0];
@@ -141,7 +147,8 @@ namespace logic
                     {
                         Debug.Log("cardDeck.add " + param[i] + " at " + random_mapping[card_count]);
                         cardDeck[random_mapping[card_count]] = new_card;
-                    } else
+                    }
+                    else
                     {
                         Debug.Log("cardDeck.add " + param[i] + " at " + card_count);
                         cardDeck[card_count] = new_card;
@@ -161,6 +168,10 @@ namespace logic
             var last_card = cardDeck[cardsId[cardsId.Count - 1]];
             if (last_card.cardType != CardData.CardType.TARGET)
             {
+                if (PrematureFail(cardsId.Select(id => cardDeck[id].cardValue).ToList()))
+                {
+                    return JudgeState.INVALID;
+                }
                 return JudgeState.PENDING;
             }
 
@@ -173,7 +184,8 @@ namespace logic
             if (Calculate(card_value_list) == last_card.cardValue)
             {
                 return JudgeState.VALID;
-            } else
+            }
+            else
             {
                 return JudgeState.INVALID;
             }
@@ -186,181 +198,6 @@ namespace logic
         public override bool CheckCompletion(List<List<int>> already_removed)
         {
             return already_removed.Count == target_count;
-        }
-    }
-
-    public class TargetSumLogic : TargetMatchingLogic
-    {
-        public TargetSumLogic(LevelData level_data)
-            : base(level_data)
-        { }
-
-        protected override int Calculate(List<int> materials)
-        {
-            int sum = 0;
-            for (int i = 0; i < materials.Count; i++)
-            {
-                sum += materials[i];
-            }
-            return sum;
-        }
-    }
-
-    public class RandomSumLogic : TargetMatchingLogic
-    {
-        public RandomSumLogic(LevelData level_data)
-            : base(level_data)
-        { }
-
-        protected override int Calculate(List<int> materials)
-        {
-            if (materials.Count == 0)
-            {
-                return -1;
-            }
-            int sum = 0;
-            for (int i = 0; i < materials.Count; i++)
-            {
-                sum += materials[i];
-            }
-            return sum;
-        }
-
-        // Start is called before the first frame update
-        public override void Generator(List<int> param)
-        {
-            int material_count = param[0];
-            target_count = param[1];
-            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(material_count);
-
-            cardDeck = new List<logic.CardData>(new logic.CardData[target_count + material_count]);
-            int material_initialized = 0;
-
-            // TODO: change this to card type?
-            for (int i = 0; i < target_count; i++)
-            {
-                // 2 or 3, basically.
-                int matgroup = UnityEngine.Random.Range(2, 4);
-                if (material_count - material_initialized <= 2 * (target_count - i))
-                {
-                    matgroup = 2;
-                }
-                int partial_sum = 0;
-                for (int j = 0; j < matgroup; j++)
-                {
-                    int temp = UnityEngine.Random.Range(1, 99);
-                    partial_sum += temp;
-                    var new_card = new CardData
-                    {
-                        cardValue = temp,
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
-                    Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
-                    cardDeck[random_mapping[material_initialized]] = new_card;
-                    material_initialized++;
-                }
-                var new_target = new CardData
-                {
-                    cardValue = partial_sum,
-                    cardType = CardData.CardType.TARGET,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
-                Debug.Log("cardDeck.add " + partial_sum + " at " + (material_count + i));
-                cardDeck[material_count + i] = new_target;
-            }
-            for (int j = material_initialized; j < material_count; j++)
-            {
-                int temp = UnityEngine.Random.Range(1, 99);
-                var new_card = new CardData
-                {
-                    cardValue = temp,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
-                Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
-                cardDeck[random_mapping[material_initialized]] = new_card;
-                material_initialized++;
-            }
-        }
-    }
-
-    public class RandomProductLogic : TargetMatchingLogic
-    {
-        public RandomProductLogic(LevelData level_data)
-            : base(level_data)
-        { }
-
-        protected override int Calculate(List<int> materials)
-        {
-            if (materials.Count == 0)
-            {
-                return -1;
-            }
-            int product = 1;
-            for (int i = 0; i < materials.Count; i++)
-            {
-                product *= materials[i];
-            }
-            return product;
-        }
-
-        // Start is called before the first frame update
-        public override void Generator(List<int> param)
-        {
-            int material_count = param[0];
-            target_count = param[1];
-            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(material_count);
-
-            cardDeck = new List<logic.CardData>(new logic.CardData[target_count + material_count]);
-            int material_initialized = 0;
-
-            // TODO: change this to card type?
-            for (int i = 0; i < target_count; i++)
-            {
-                // 2 or 3, basically.
-                int matgroup = UnityEngine.Random.Range(2, 4);
-                if (material_count - material_initialized <= 2 * (target_count - i))
-                {
-                    matgroup = 2;
-                }
-                int partial_product = 1;
-                for (int j = 0; j < matgroup; j++)
-                {
-                    int temp = UnityEngine.Random.Range(1, 9);
-                    partial_product *= temp;
-                    var new_card = new CardData
-                    {
-                        cardValue = temp,
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
-                    Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
-                    cardDeck[random_mapping[material_initialized]] = new_card;
-                    material_initialized++;
-                }
-                var new_target = new CardData
-                {
-                    cardValue = partial_product,
-                    cardType = CardData.CardType.TARGET,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
-                Debug.Log("cardDeck.add " + partial_product + " at " + (material_count + i));
-                cardDeck[material_count + i] = new_target;
-            }
-            for (int j = material_initialized; j < material_count; j++)
-            {
-                int temp = UnityEngine.Random.Range(1, 9);
-                var new_card = new CardData
-                {
-                    cardValue = temp,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
-                Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
-                cardDeck[random_mapping[material_initialized]] = new_card;
-                material_initialized++;
-            }
         }
     }
 }
