@@ -1,0 +1,8 @@
+{
+    "columnCount": 4,
+    "materialCount": 24,
+    "deckGeneratorParams": [13, 2, 0, 7],
+    "boardRuleLogicName": "ModBoardRuleLogic",
+    "ruleImageName": "formula6hard.png",
+    "backgroundImagePrefix": ""
+}

@@ -1,0 +1,8 @@
+{
+    "columnCount": 3,
+    "materialCount": 12,
+    "deckGeneratorParams": [11, 100],
+    "boardRuleLogicName": "NumberReverseLogic",
+    "ruleImageName": "formulaReverse.png",
+    "backgroundImagePrefix": ""
+}

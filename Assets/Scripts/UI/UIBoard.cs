@@ -103,8 +103,9 @@ public class UIBoard : MonoBehaviour
     {
         int max_width = Mathf.RoundToInt(background.GetComponent<RectTransform>().rect.width * 550.0f / 640.0f);
         int max_height = Mathf.RoundToInt(background.GetComponent<RectTransform>().rect.height * 850.0f / 1136.0f);
-        int row_count = LevelManager.Instance.boardRuleLogic.rowCount;
+        int material_count = LevelManager.Instance.boardRuleLogic.materialCount;
         int col_count = LevelManager.Instance.boardRuleLogic.columnCount;
+        int row_count = (material_count - 1) / col_count + 1;
         int target_count = LevelManager.Instance.boardRuleLogic.targetCount;
 
         int target_row = (target_count - 1) / col_count + 1;
@@ -180,14 +181,14 @@ public class UIBoard : MonoBehaviour
     
     void InitializeEmptyButtons()
     {
-        int row_count = LevelManager.Instance.boardRuleLogic.rowCount;
+        int material_count = LevelManager.Instance.boardRuleLogic.materialCount;
         int col_count = LevelManager.Instance.boardRuleLogic.columnCount;
         int target_count = LevelManager.Instance.boardRuleLogic.targetCount;
-        System.Array.Resize(ref uiCardButtons, row_count * col_count + target_count);
-        Debug.Log("InitializeEmptyButtons." + "row_count:" + row_count
+        System.Array.Resize(ref uiCardButtons, material_count + target_count);
+        Debug.Log("InitializeEmptyButtons." + "material_count:" + material_count
             + "col_count:" + col_count
             + "target_count:" + target_count);
-        for (int i = 0; i < row_count * col_count; i++)
+        for (int i = 0; i < material_count; i++)
         {
             // TODO: change all these to using card and size. 
             var new_card = Instantiate(cardButtonPrefab);
@@ -197,7 +198,7 @@ public class UIBoard : MonoBehaviour
 
             uiCardButtons[i] = new_card.GetComponent<UICardButton>();
         }
-        for (int i = row_count * col_count; i < row_count * col_count + target_count; i++)
+        for (int i = material_count; i < material_count + target_count; i++)
         {
             // TODO: change all these to using card and size. 
             var new_card = Instantiate(cardButtonPrefab);
@@ -212,11 +213,11 @@ public class UIBoard : MonoBehaviour
 
     void LoadCardButtons()
     {
-        int row_count = LevelManager.Instance.boardRuleLogic.rowCount;
+        int material_count = LevelManager.Instance.boardRuleLogic.materialCount;
         int col_count = LevelManager.Instance.boardRuleLogic.columnCount;
         int target_count = LevelManager.Instance.boardRuleLogic.targetCount;
-        Debug.Log("LoadCardButtons." + "row_count:" + row_count + "col_count:" + col_count);
-        for (int i = 0; i < row_count * col_count + target_count; i++)
+        Debug.Log("LoadCardButtons." + "material_count:" + material_count + "col_count:" + col_count);
+        for (int i = 0; i < material_count + target_count; i++)
         {
             // TODO: we only support 24 max stuff here. 
             uiCardButtons[i].SetCardAndEnable(i);

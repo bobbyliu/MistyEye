@@ -1,5 +1,5 @@
 {
-    "rowCount": 5,
+    "materialCount": 15,
     "columnCount": 3,
     "deckGeneratorParams": [11,4],
     "boardRuleLogicName": "RandomSumLogic",

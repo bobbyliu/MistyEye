@@ -1,0 +1,8 @@
+{
+    "columnCount": 4,
+    "materialCount": 24,
+    "deckGeneratorParams": [],
+    "boardRuleLogicName": "NumberCycleLogic",
+    "ruleImageName": "formulacycle.png",
+    "backgroundImagePrefix": ""
+}

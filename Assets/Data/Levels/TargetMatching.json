@@ -1,5 +1,5 @@
 {
-    "rowCount": 4,
+    "materialCount": 12,
     "columnCount": 3,
     "deckGeneratorParams": [6,6,1,2,3,4,5,6,0,1,2,3,4,5,6],
     "boardRuleLogicName": "TargetMatchingLogic",

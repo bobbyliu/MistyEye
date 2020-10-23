@@ -1,5 +1,5 @@
 {
-    "rowCount": 5,
+    "materialCount": 15,
     "columnCount": 3,
     "deckGeneratorParams": [1,0,2,2,0,3,3,3,0,4,4,4,4,0,5,5,5,5,5,0],
     "boardRuleLogicName": "OrderedGroupMatcherLogic",

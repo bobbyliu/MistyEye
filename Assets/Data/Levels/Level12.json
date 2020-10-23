@@ -1,0 +1,8 @@
+{
+    "materialCount": 9,
+    "columnCount": 3,
+    "deckGeneratorParams": [1,2,3,4,5,6,7,8,9,0],
+    "boardRuleLogicName": "OrderedGroupMatcherLogic",
+    "ruleImageName": "formulastraight.png",
+    "backgroundImagePrefix": ""
+}

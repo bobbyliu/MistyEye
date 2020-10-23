@@ -26,7 +26,7 @@ namespace logic
     [Serializable]
     public class LevelData
     {
-        public int rowCount;
+        public int materialCount;
         public int columnCount;
         public int targetCount;
 
@@ -45,7 +45,7 @@ namespace logic
     {
         public BoardRuleLogicBase(LevelData level_data)
         {
-            rowCount = level_data.rowCount;
+            materialCount = level_data.materialCount;
             columnCount = level_data.columnCount;
             targetCount = level_data.targetCount;
             Generator(level_data.deckGeneratorParams);
@@ -89,7 +89,7 @@ namespace logic
             return false;
         }
 
-        public int rowCount;
+        public int materialCount;
         public int columnCount;
         public int targetCount;
         public List<CardData> cardDeck = new List<CardData>();
@@ -97,14 +97,18 @@ namespace logic
 
     public class BoardRuleLogicUtil
     {
-        public static int[] GetRandomShuffler(int size)
+        public static int[] GetRandomShuffler(int size, int steps = -1)
         {
             int[] random_mapping = new int[size];
+            if (steps == -1)
+            {
+                steps = size;
+            }
             for (int i = 0; i < size; i++)
             {
                 random_mapping[i] = i;
             }
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < steps; i++)
             {
                 int temp = UnityEngine.Random.Range(i, size);
                 int valuetemp;

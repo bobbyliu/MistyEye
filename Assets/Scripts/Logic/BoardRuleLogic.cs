@@ -17,9 +17,9 @@ namespace logic
         {
             List<int> current_group = new List<int>();
 
-            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(rowCount * columnCount);
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(materialCount);
 
-            cardDeck = new List<logic.CardData>(new logic.CardData[rowCount * columnCount]);
+            cardDeck = new List<logic.CardData>(new logic.CardData[materialCount]);
             int card_count = 0;
             for (int i = 0; i < param.Count; i++)
             {
@@ -120,45 +120,32 @@ namespace logic
             return false;
         }
 
-        // Generator param list: material_count, target_count, {material_list}, 0, {target_list}
+        // Generator param list: {material_list}, {target_list}
         public override void Generator(List<int> param)
         {
-            int material_count = param[0];
-            target_count = param[1];
-            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(material_count);
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(materialCount);
 
-            cardDeck = new List<logic.CardData>(new logic.CardData[target_count + material_count]);
-            int card_count = 0;
+            cardDeck = new List<logic.CardData>(new logic.CardData[targetCount + materialCount]);
 
-            // TODO: change this to card type?
-            int phase = 1;
-            for (int i = 2; i < param.Count; i++)
+            for (int card_count = 0; card_count < param.Count; card_count++)
             {
-                if (param[i] != 0)
+                var new_card = new CardData
                 {
-                    var new_card = new CardData
-                    {
-                        cardValue = param[i],
-                        cardType = (phase == 1) ? CardData.CardType.MATERIAL : CardData.CardType.TARGET,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    cardValue = param[card_count],
+                    cardType = (card_count < materialCount) ? 
+                            CardData.CardType.MATERIAL : CardData.CardType.TARGET,
+                    imageName = "MaterialBase.png"  // TODO: ugh..
+                };
 
-                    if (phase == 1)
-                    {
-                        Debug.Log("cardDeck.add " + param[i] + " at " + random_mapping[card_count]);
-                        cardDeck[random_mapping[card_count]] = new_card;
-                    }
-                    else
-                    {
-                        Debug.Log("cardDeck.add " + param[i] + " at " + card_count);
-                        cardDeck[card_count] = new_card;
-                    }
-
-                    card_count++;
+                if (card_count < materialCount)
+                {
+                    Debug.Log("cardDeck.add " + param[card_count] + " at " + random_mapping[card_count]);
+                    cardDeck[random_mapping[card_count]] = new_card;
                 }
                 else
                 {
-                    phase = 2;
+                    Debug.Log("cardDeck.add " + param[card_count] + " at " + card_count);
+                    cardDeck[card_count] = new_card;
                 }
             }
         }
@@ -197,7 +184,7 @@ namespace logic
 
         public override bool CheckCompletion(List<List<int>> already_removed)
         {
-            return already_removed.Count == target_count;
+            return already_removed.Count == targetCount;
         }
     }
 }

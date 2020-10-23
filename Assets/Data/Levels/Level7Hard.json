@@ -1,0 +1,9 @@
+{
+    "columnCount": 5,
+    "materialCount": 24,
+    "targetCount": 8,
+    "deckGeneratorParams": [4, 11, 3],
+    "boardRuleLogicName": "StepUpNLogic",
+    "ruleImageName": "formula7.png",
+    "backgroundImagePrefix": ""
+}

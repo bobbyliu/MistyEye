@@ -1,0 +1,9 @@
+{
+    "columnCount": 4,
+    "materialCount": 12,
+    "targetCount": 6,
+    "deckGeneratorParams": [9, 10, 100],
+    "boardRuleLogicName": "DivisionRuleLogic",
+    "ruleImageName": "formulaquotient.png",
+    "backgroundImagePrefix": ""
+}
