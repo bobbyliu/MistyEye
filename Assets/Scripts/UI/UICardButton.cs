@@ -53,10 +53,15 @@ public class UICardButton : MonoBehaviour
             showNumberWhenNormal = false;
             return;
         }
+        if (card_data.cardType == logic.CardData.CardType.MATERIAL_PUBLIC)
+        {
+            SetMaterialCardAndEnable(i);
+            showNumberWhenNormal = true;
+            return;
+        }
         if (card_data.cardType == logic.CardData.CardType.TARGET)
         {
             SetTargetCardAndEnable(i);
-//            hideWhenRemoved = true;
             showNumberWhenNormal = true;
             return;
         }
@@ -76,7 +81,7 @@ public class UICardButton : MonoBehaviour
     }
 
     // TODO: this should not be a separate function.
-    public void SetMaterialCardAndEnable(int i) //int card_id, string level_image)
+    public void SetMaterialCardAndEnable(int i)
     {
         logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
         Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "MaterialBase.png").Completed +=
@@ -100,7 +105,7 @@ public class UICardButton : MonoBehaviour
         cardId = i;
         Refresh();
     }
-    public void SetTargetCardAndEnable(int i) //int card_id, string level_image)
+    public void SetTargetCardAndEnable(int i)
     {
         logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
         Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "TargetBase.png").Completed +=

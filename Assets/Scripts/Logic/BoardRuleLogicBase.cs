@@ -16,10 +16,11 @@ namespace logic
         public enum CardType
         {
             INVALID,
-            PUBLIC, // TODO: maybe useless?
+            PUBLIC,
             SECRET,
-            MATERIAL,
-            TARGET
+            MATERIAL,  // Material type, hidden -> show
+            MATERIAL_PUBLIC,
+            TARGET  // Target type, always show
         }
         public CardType cardType = CardType.INVALID;
     }

@@ -27,7 +27,7 @@ namespace logic
                 {
                     var new_card = new CardData {
                         cardValue = param[i],
-                        cardType = CardData.CardType.SECRET,
+                        cardType = CardData.CardType.MATERIAL,
                         imageName = "MaterialBase.png"
 //                        imageName = param[i] + ".png"
                     };

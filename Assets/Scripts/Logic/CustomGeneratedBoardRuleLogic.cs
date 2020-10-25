@@ -387,19 +387,19 @@ namespace logic
                     cardDeck[random_mapping[group_count * 3]] = new CardData
                     {
                         cardValue = main,
-                        cardType = CardData.CardType.MATERIAL,
+                        cardType = CardData.CardType.MATERIAL_PUBLIC,
                         imageName = "MaterialBase.png"  // TODO: ugh..
                     };
                     cardDeck[random_mapping[group_count * 3 + 1]] = new CardData
                     {
                         cardValue = group2,
-                        cardType = CardData.CardType.MATERIAL,
+                        cardType = CardData.CardType.MATERIAL_PUBLIC,
                         imageName = "MaterialBase.png"  // TODO: ugh..
                     };
                     cardDeck[random_mapping[group_count * 3 + 2]] = new CardData
                     {
                         cardValue = group3,
-                        cardType = CardData.CardType.MATERIAL,
+                        cardType = CardData.CardType.MATERIAL_PUBLIC,
                         imageName = "MaterialBase.png"  // TODO: ugh..
                     };
                     group_count++;
@@ -429,6 +429,8 @@ namespace logic
                 }
             }
             if (NumberCycle(cardDeck[cardsId[0]].cardValue, cardDeck[cardsId[1]].cardValue) ==
+                cardDeck[cardsId[2]].cardValue ||
+                NumberCycle(cardDeck[cardsId[1]].cardValue, cardDeck[cardsId[0]].cardValue) ==
                 cardDeck[cardsId[2]].cardValue)
             {
                 return JudgeState.VALID;
