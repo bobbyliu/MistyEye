@@ -21,9 +21,9 @@ Level page
 
 Level 1
 - Ordered group - w/ randomization (Done)
-- Unordered group support (P1)
-- Open card support (P1)
-- Fill more levels (P2)
+- Unordered group support (Done)
+- Open card support (Done)
+- Fill more levels (Done)
 
 Level - Grouping?
 - TieredMatch (Done)
@@ -31,6 +31,7 @@ Level - Grouping?
 - RandomProduct (Done)
 
 Sound Effect (P2)
-Survival Mode (P3)
+Survival Mode (P3 - may not do)
 Localization Support (P3)
 Payment Support (P3)
+

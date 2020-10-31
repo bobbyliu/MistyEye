@@ -118,13 +118,20 @@ namespace mgr
                 // The texture is ready for use.
 
                 onLoadLevelData();
-
-                timer = 0.0f;
-                timerState = TimerState.PLUS;
             } else
             {
                 // TODO: maybe retry? This is essentially a crash.
             }
+        }
+
+        public void ResetTimer()
+        {
+            timer = 0.0f;
+        }
+        public void StartTimer()
+        {
+            timer = 0.0f;
+            timerState = TimerState.PLUS;
         }
 
         public void FlipCard(int card_id)

@@ -20,9 +20,12 @@ public class UIBoard : MonoBehaviour
     public GameObject targetBoard;
     public GridLayoutGroup targetLayoutGroup;
     [SerializeField] [Tooltip("按键区域")] private GameObject textBoard;
+
     [SerializeField] [Tooltip("按键记录")] private TMPro.TextMeshProUGUI partialText;
     public Image greenLight;
     public Image redLight;
+
+    [SerializeField] [Tooltip("按键记录")] private TMPro.TextMeshProUGUI revealCountdownTimer;
 
     // TODO: remove all these?
     public GameObject background;
@@ -81,6 +84,31 @@ public class UIBoard : MonoBehaviour
                     boardMenu.SetFormulaImage(handle.Result);
                 }
             };
+
+        StartCoroutine(RevealCountdown());
+    }
+
+    private IEnumerator RevealCountdown()
+    {
+        LevelManager.Instance.ResetTimer();
+        foreach (var card in uiCardButtons)
+        {
+            card.cardStatus = UICardButton.CardStatus.SELECTED;
+        }
+        revealCountdownTimer.gameObject.SetActive(true);
+        revealCountdownTimer.text = "3";
+        yield return new WaitForSecondsRealtime(1.0f);
+        revealCountdownTimer.text = "2";
+        yield return new WaitForSecondsRealtime(1.0f);
+        revealCountdownTimer.text = "1";
+        yield return new WaitForSecondsRealtime(1.0f);
+        revealCountdownTimer.gameObject.SetActive(false);
+        foreach (var card in uiCardButtons)
+        {
+            card.cardStatus = UICardButton.CardStatus.NORMAL;
+        }
+        LevelManager.Instance.StartTimer();
+        yield return 0;
     }
 
     void ForceFlipBack(int card_id)
