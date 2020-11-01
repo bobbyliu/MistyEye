@@ -1,0 +1,8 @@
+{
+    "materialCount": 12,
+    "columnCount": 3,
+    "deckGeneratorParams": [9, 3],
+    "boardRuleLogicName": "MixedNineLogic",
+    "ruleImageName": "formulastraight.png",
+    "backgroundImagePrefix": ""
+}

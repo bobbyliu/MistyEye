@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace logic
@@ -437,6 +438,111 @@ namespace logic
             } else
             {
                 return JudgeState.INVALID;
+            }
+        }
+    }
+
+    public class MixedNineLogic : BoardRuleLogicBase
+    {
+        public MixedNineLogic(LevelData level_data)
+            : base(level_data)
+        { }
+
+        // Return unique digits within the group. Return -1 if there is a dupe.
+        private int MixedNine(List<int> nums)
+        {
+            bool[] hasNum = new bool[10];
+            int totes = 0;
+            foreach (int num in nums)
+            {
+                int temp = num;
+                while (temp > 0)
+                {
+                    int digit = temp % 10;
+                    // Dupe
+                    if (hasNum[digit])
+                    {
+                        return -1;
+                    } else
+                    {
+                        hasNum[digit] = true;
+                        totes++;
+                    }
+                    temp = temp / 10;
+                }
+            }
+            return totes;
+        }
+        private int AssembleNumber(int[] num, int start, int end)
+        {
+            int temp = 0;
+            for (int i = start; i < end; i++)
+            {
+                temp = temp * 10 + num[i] + 1;
+            }
+            return temp;
+        }
+
+        private int maxNum;
+        // Parameter format: maxNum, number_per_group;
+        public override void Generator(List<int> param)
+        {
+            cardDeck = new List<logic.CardData>(new logic.CardData[materialCount]);
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(materialCount);
+
+            maxNum = param[0];
+            int number_per_group = param[1];
+            int number_of_groups = materialCount / number_per_group;
+
+            HashSet<int> dupe = new HashSet<int>();
+
+            for (int i = 0; i < number_of_groups; i++)
+            {
+                List<int> assembled = new List<int>(new int[number_per_group]);
+                bool found_valid_group = false;
+                while (!found_valid_group)
+                {
+                    found_valid_group = true;
+                    int[] randomizer = BoardRuleLogicUtil.GetRandomShuffler(maxNum);  // +1
+                    for (int j = 0; j < number_per_group; j++)
+                    {
+                        int value = AssembleNumber(randomizer,
+                            (maxNum * j) / number_per_group, (maxNum * (j+1)) / number_per_group);
+                        assembled[j] = value;
+                        if (dupe.Contains(assembled[j]))
+                        {
+                            found_valid_group = false;
+                            break;
+                        }
+                    }
+                }
+
+                for (int j = 0; j < number_per_group; j++)
+                {
+                    cardDeck[random_mapping[i * number_per_group + j]] = new CardData
+                    {
+                        cardValue = assembled[j],
+                        cardType = CardData.CardType.MATERIAL_PUBLIC,
+                        imageName = "MaterialBase.png"  // TODO: ugh..
+                    };
+                    dupe.Add(assembled[j]);
+                }
+            }
+        }
+        public override JudgeState JudgeAndFlip(List<int> cardsId)
+        {
+            int totes = MixedNine(cardsId.Select(id => cardDeck[id].cardValue).ToList());
+            if (totes < 0)
+            {
+                return JudgeState.INVALID;
+            }
+            if (totes < maxNum)
+            {
+                return JudgeState.PENDING;
+            }
+            else
+            {
+                return JudgeState.VALID;
             }
         }
     }

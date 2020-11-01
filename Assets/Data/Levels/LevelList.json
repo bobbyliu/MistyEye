@@ -1,5 +1,5 @@
 {
-    "levelCount": 21,
+    "levelCount": 22,
     "levelInfo": [
         {"levelName": "Level1", "imageName": "level1.png"},
         {"levelName": "Level1Hard", "imageName": "level1.png"},
@@ -22,6 +22,7 @@
         {"levelName": "Level11Hard", "imageName": "level11.png"},
         {"levelName": "Level12", "imageName": "level12.png"},
         {"levelName": "Level12Hard", "imageName": "level12.png"},
+        {"levelName": "Level13", "imageName": "level13.png"},
 
         {"levelName": "Level5", "imageName": "level5.png"},
         {"levelName": "RandomSum", "imageName": "level6.png"},
