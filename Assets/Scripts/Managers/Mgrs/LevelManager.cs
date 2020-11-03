@@ -98,7 +98,6 @@ namespace mgr
         public void LoadLevel()
         {
             isReady = false;
-//            levelId = i;
             string level_name = DataLoader.Instance.levelList.levelInfo[levelId].levelName;
             // level_name sample: "LevelList.json".
             Addressables.LoadAssetAsync<TextAsset>("Assets/Data/Levels/" + level_name + ".json").Completed 
@@ -186,8 +185,7 @@ namespace mgr
             if (boardRuleLogic.CheckCompletion(alreadyRemoved))
             {
                 onFinish();
-//                ClearLevel();
-                // TODO: finish
+                DataLoader.Instance.UpdateLevelProgress(levelId);
             }
             pendingCheck = false;
             yield return 0;

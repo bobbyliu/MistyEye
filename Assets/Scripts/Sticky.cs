@@ -22,7 +22,7 @@ public class Sticky : MonoBehaviour {
     IEnumerator Start()
     {
         yield return StartCoroutine(Initialize());
-        Load();
+//        Load();
         TitleButton.interactable = true;
     }
 

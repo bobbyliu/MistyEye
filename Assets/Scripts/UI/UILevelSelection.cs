@@ -66,7 +66,10 @@ public class UILevelSelection : MonoBehaviour
         int row_count = ROW_COUNT;
         int col_count = COL_COUNT;
         System.Array.Resize(ref uiLevelSelectionButtons, row_count * col_count);
-        for (int i = 0; i < Math.Min(DataLoader.Instance.levelList.levelCount, row_count * col_count); i++)
+
+        int min = 0;
+        int max = Math.Min(DataLoader.Instance.levelList.levelCount, DataLoader.Instance.playerData.levelProgress + 1);
+        for (int i = min;  i < Math.Min(max, row_count * col_count); i++)
         {
             // TODO: we only support 24 max stuff here. 
             uiLevelSelectionButtons[i].SetLevelAndEnable(i, DataLoader.Instance.levelList.levelInfo[i].imageName);
