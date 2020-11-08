@@ -78,8 +78,6 @@
     <Compile Include="Assets\Scripts\Managers\Mgrs\LevelManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Mgrs\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Managers\Mgrs\SaveFile.cs" />
-    <Compile Include="Assets\Scripts\Sticky.cs" />
-    <Compile Include="Assets\Scripts\Title.cs" />
     <Compile Include="Assets\Scripts\UI\UIBoard.cs" />
     <Compile Include="Assets\Scripts\UI\UIBoardMenu.cs" />
     <Compile Include="Assets\Scripts\UI\UICardButton.cs" />
@@ -151,6 +149,9 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/bobbyliu/Entertainment/Unity/MistyEye/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>C:/Users/bobbyliu/Entertainment/Unity/MistyEye/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.7f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

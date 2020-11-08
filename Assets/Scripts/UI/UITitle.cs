@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UITitle : MonoBehaviour
 {
@@ -14,5 +16,18 @@ public class UITitle : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void LoadMainScene()
+    {
+        StartCoroutine(LoadMainSceneCoroutine());
+        this.GetComponent<Button>().enabled = false;
+    }
+    private IEnumerator LoadMainSceneCoroutine()
+    {
+        float fadeTime = this.GetComponent<Fading>().BeginFade(1);
+        yield return new WaitForSeconds(fadeTime);
+        SceneManager.LoadScene("LevelSelection");
+        yield break;
     }
 }
