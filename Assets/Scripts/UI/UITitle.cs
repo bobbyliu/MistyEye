@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -9,7 +10,6 @@ public class UITitle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -20,8 +20,11 @@ public class UITitle : MonoBehaviour
 
     public void LoadMainScene()
     {
-        StartCoroutine(LoadMainSceneCoroutine());
-        this.GetComponent<Button>().enabled = false;
+        if (SplashScreen.isFinished)
+        {
+            StartCoroutine(LoadMainSceneCoroutine());
+            this.GetComponent<Button>().interactable = false;
+        }
     }
     private IEnumerator LoadMainSceneCoroutine()
     {
