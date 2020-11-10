@@ -81,8 +81,10 @@
     <Compile Include="Assets\Scripts\UI\UIBoard.cs" />
     <Compile Include="Assets\Scripts\UI\UIBoardMenu.cs" />
     <Compile Include="Assets\Scripts\UI\UICardButton.cs" />
+    <Compile Include="Assets\Scripts\UI\UIInfoMenu.cs" />
     <Compile Include="Assets\Scripts\UI\UILevelSelection.cs" />
     <Compile Include="Assets\Scripts\UI\UILevelSelectionButton.cs" />
+    <Compile Include="Assets\Scripts\UI\UILevelSelectionMenu.cs" />
     <Compile Include="Assets\Scripts\UI\UIPauseMenu.cs" />
     <Compile Include="Assets\Scripts\UI\UITitle.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
