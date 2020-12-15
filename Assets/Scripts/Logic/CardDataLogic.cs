@@ -17,8 +17,9 @@ namespace logic
     {
         public int cardValue;
         public int remainingCount;
-        // TODO: for explicit, may need multiple image name?
-        public string imageName;
+
+        public string clickableImageName;
+        public string selectionImageName;
 
         public enum CardType
         {
@@ -28,6 +29,9 @@ namespace logic
             TARGET  // Target type, always show
         }
         public CardType cardType = CardType.INVALID;
+
+        public bool hideWhenRemoved = false;
+        public bool showNumberWhenNormal = false;
 
         private Stack<int> cardValueHistory = new Stack<int>();
         private Stack<int> remainingCountHistory = new Stack<int>();
@@ -83,7 +87,9 @@ namespace logic
             {
                 cardValue = cardValue,
                 cardType = CardData.CardType.MATERIAL,
-                imageName = "MaterialBase.png",
+                clickableImageName = "MaterialBase.png",
+                selectionImageName = "MaterialSelected.png",
+                showNumberWhenNormal = false,
                 remainingCount = 1
             };
         }
@@ -93,7 +99,9 @@ namespace logic
             {
                 cardValue = cardValue,
                 cardType = CardData.CardType.MATERIAL_PUBLIC,
-                imageName = "MaterialBase.png",
+                clickableImageName = "MaterialBase.png",
+                selectionImageName = "MaterialSelected.png",
+                showNumberWhenNormal = true,
                 remainingCount = 1
             };
         }
@@ -103,7 +111,9 @@ namespace logic
             {
                 cardValue = cardValue,
                 cardType = CardData.CardType.TARGET,
-                imageName = "MaterialBase.png",  // Ugh..
+                clickableImageName = "TargetBase.png",
+                selectionImageName = "TargetBase.png",  // Hmm
+                showNumberWhenNormal = true,
                 remainingCount = 1
             };
         }
@@ -113,7 +123,9 @@ namespace logic
             {
                 cardValue = cardValue,
                 cardType = CardData.CardType.TARGET,
-                imageName = "MaterialBase.png",  // Ugh..
+                clickableImageName = "TargetBase.png",
+                selectionImageName = "TargetBase.png",  // Hmm
+                showNumberWhenNormal = true,
                 remainingCount = repeat
             };
         }

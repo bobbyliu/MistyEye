@@ -16,10 +16,6 @@ public class UICardButton : MonoBehaviour
     private Sprite clickableImage;
     private Sprite selectionImage;
 
-    // TODO: check if we should use this or cardType directly?
-    private bool hideWhenRemoved;
-    private bool showNumberWhenNormal;
-
     [SerializeField] [Tooltip("按钮")] private Button cardButton;
     [SerializeField] [Tooltip("数字")] private Text cardText;
     // Used to pass level loading status.
@@ -44,65 +40,7 @@ public class UICardButton : MonoBehaviour
 
     public void SetCardAndEnable(int i)
     {
-        if (cardData.cardType == logic.CardData.CardType.MATERIAL)
-        {
-            SetMaterialCardAndEnable(i);
-            showNumberWhenNormal = false;
-            return;
-        }
-        if (cardData.cardType == logic.CardData.CardType.MATERIAL_PUBLIC)
-        {
-            SetMaterialCardAndEnable(i);
-            showNumberWhenNormal = true;
-            return;
-        }
-        if (cardData.cardType == logic.CardData.CardType.TARGET)
-        {
-            SetTargetCardAndEnable(i);
-            showNumberWhenNormal = true;
-            return;
-        }
-
-        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + cardData.imageName).Completed +=
-            (AsyncOperationHandle<Sprite> handle) => {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    selectionImage = handle.Result;
-                    Refresh();
-                }
-            };
-        cardData.cardStatus = logic.CardStatus.NORMAL;
-        cardId = i;
-        Refresh();
-    }
-
-    // TODO: this should not be a separate function.
-    public void SetMaterialCardAndEnable(int i)
-    {
-        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "MaterialBase.png").Completed +=
-            (AsyncOperationHandle<Sprite> handle) => {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    clickableImage = handle.Result;
-                    // TODO: is this too many Refresh calls? Maybe do this only at Refresh time? 
-                    Refresh();
-                }
-            };
-        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "MaterialSelected.png").Completed +=
-            (AsyncOperationHandle<Sprite> handle) => {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    selectionImage = handle.Result;
-                    Refresh();
-                }
-            };
-        cardData.cardStatus = logic.CardStatus.NORMAL;
-        cardId = i;
-        Refresh();
-    }
-    public void SetTargetCardAndEnable(int i)
-    {
-        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "TargetBase.png").Completed +=
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + cardData.clickableImageName).Completed +=
             (AsyncOperationHandle<Sprite> handle) => {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
@@ -110,7 +48,7 @@ public class UICardButton : MonoBehaviour
                     Refresh();
                 }
             };
-        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "TargetBase.png").Completed +=
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + cardData.selectionImageName).Completed +=
             (AsyncOperationHandle<Sprite> handle) => {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
@@ -156,7 +94,7 @@ public class UICardButton : MonoBehaviour
             cardButton.GetComponent<Image>().sprite = backgroundImage;
             cardText.text = "";
             cardButton.interactable = false;
-            if (hideWhenRemoved)
+            if (cardData != null && cardData.hideWhenRemoved)
             {
                 gameObject.SetActive(false);
             }
@@ -172,7 +110,7 @@ public class UICardButton : MonoBehaviour
         if (cardData.cardStatus == logic.CardStatus.NORMAL)
         {
             cardButton.GetComponent<Image>().sprite = clickableImage;
-            if (showNumberWhenNormal)
+            if (cardData.showNumberWhenNormal)
             {
                 cardText.text = show_data;
             } else
@@ -180,7 +118,7 @@ public class UICardButton : MonoBehaviour
                 cardText.text = "";
             }
             cardButton.interactable = true;
-            if (hideWhenRemoved)
+            if (cardData.hideWhenRemoved)
             {
                 gameObject.SetActive(true);
             }
