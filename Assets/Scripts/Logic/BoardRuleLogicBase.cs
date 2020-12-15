@@ -7,24 +7,6 @@ using UnityEngine;
 namespace logic
 {
     [Serializable]
-    public class CardData
-    {
-        public int cardValue;
-        // TODO: for explicit, may need multiple image name?
-        public string imageName;
-
-        public enum CardType
-        {
-            INVALID,
-            PUBLIC,
-            SECRET,
-            MATERIAL,  // Material type, hidden -> show
-            MATERIAL_PUBLIC,
-            TARGET  // Target type, always show
-        }
-        public CardType cardType = CardType.INVALID;
-    }
-    [Serializable]
     public class LevelData
     {
         public int materialCount;

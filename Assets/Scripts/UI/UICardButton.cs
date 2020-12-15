@@ -15,7 +15,6 @@ public class UICardButton : MonoBehaviour
     private Sprite backgroundImage;
     private Sprite clickableImage;
     private Sprite selectionImage;
-    private string valueText;
 
     // TODO: check if we should use this or cardType directly?
     private bool hideWhenRemoved;
@@ -26,47 +25,45 @@ public class UICardButton : MonoBehaviour
     // Used to pass level loading status.
     public int cardId { get; set; }
 
-    public enum CardStatus
+    private logic.CardData cardData;
+
+
+    private void OnDestroy()
     {
-        REMOVED,
-        NORMAL,
-        SELECTED,
-    }
-    private CardStatus m_cardStatus;
-    public CardStatus cardStatus
-    {
-        private get { return m_cardStatus; }
-        set
+        if (cardData != null)
         {
-            m_cardStatus = value;
-            Refresh();
+            cardData.onRefresh -= Refresh;
         }
     }
 
-    public void SetCardAndEnable(int i) //int card_id, string level_image)
+    public void BindCardData(logic.CardData card_data)
     {
-        logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
+        cardData = card_data;
+        card_data.onRefresh += Refresh;
+    }
 
-        if (card_data.cardType == logic.CardData.CardType.MATERIAL)
+    public void SetCardAndEnable(int i)
+    {
+        if (cardData.cardType == logic.CardData.CardType.MATERIAL)
         {
             SetMaterialCardAndEnable(i);
             showNumberWhenNormal = false;
             return;
         }
-        if (card_data.cardType == logic.CardData.CardType.MATERIAL_PUBLIC)
+        if (cardData.cardType == logic.CardData.CardType.MATERIAL_PUBLIC)
         {
             SetMaterialCardAndEnable(i);
             showNumberWhenNormal = true;
             return;
         }
-        if (card_data.cardType == logic.CardData.CardType.TARGET)
+        if (cardData.cardType == logic.CardData.CardType.TARGET)
         {
             SetTargetCardAndEnable(i);
             showNumberWhenNormal = true;
             return;
         }
 
-        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + card_data.imageName).Completed +=
+        Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + cardData.imageName).Completed +=
             (AsyncOperationHandle<Sprite> handle) => {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
@@ -74,8 +71,7 @@ public class UICardButton : MonoBehaviour
                     Refresh();
                 }
             };
-        m_cardStatus = CardStatus.NORMAL;
-        valueText = card_data.cardValue.ToString();
+        cardData.cardStatus = logic.CardStatus.NORMAL;
         cardId = i;
         Refresh();
     }
@@ -83,12 +79,12 @@ public class UICardButton : MonoBehaviour
     // TODO: this should not be a separate function.
     public void SetMaterialCardAndEnable(int i)
     {
-        logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
         Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "MaterialBase.png").Completed +=
             (AsyncOperationHandle<Sprite> handle) => {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
                     clickableImage = handle.Result;
+                    // TODO: is this too many Refresh calls? Maybe do this only at Refresh time? 
                     Refresh();
                 }
             };
@@ -100,14 +96,12 @@ public class UICardButton : MonoBehaviour
                     Refresh();
                 }
             };
-        m_cardStatus = CardStatus.NORMAL;
-        valueText = card_data.cardValue.ToString();
+        cardData.cardStatus = logic.CardStatus.NORMAL;
         cardId = i;
         Refresh();
     }
     public void SetTargetCardAndEnable(int i)
     {
-        logic.CardData card_data = LevelManager.Instance.boardRuleLogic.cardDeck[i];
         Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "TargetBase.png").Completed +=
             (AsyncOperationHandle<Sprite> handle) => {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -124,8 +118,7 @@ public class UICardButton : MonoBehaviour
                     Refresh();
                 }
             };
-        m_cardStatus = CardStatus.NORMAL;
-        valueText = card_data.cardValue.ToString();
+        cardData.cardStatus = logic.CardStatus.NORMAL;
         cardId = i;
         Refresh();
     }
@@ -133,7 +126,6 @@ public class UICardButton : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        cardStatus = CardStatus.REMOVED;
         cardButton.onClick.AddListener(ClickCard);
         Addressables.LoadAssetAsync<Sprite>(CARD_ASSET_PREFIX + "GreySquare.png").Completed +=
             (AsyncOperationHandle<Sprite> handle) => {
@@ -159,12 +151,30 @@ public class UICardButton : MonoBehaviour
 
     void Refresh()
     {
-        if (m_cardStatus == CardStatus.NORMAL)
+        if (cardData == null || cardData.cardStatus == logic.CardStatus.REMOVED)
+        {
+            cardButton.GetComponent<Image>().sprite = backgroundImage;
+            cardText.text = "";
+            cardButton.interactable = false;
+            if (hideWhenRemoved)
+            {
+                gameObject.SetActive(false);
+            }
+            return;
+        }
+
+        string show_data = cardData.cardValue.ToString();
+        if (cardData.remainingCount > 1)
+        {
+            show_data = string.Format("{0}({1})", show_data, cardData.remainingCount);
+        }
+
+        if (cardData.cardStatus == logic.CardStatus.NORMAL)
         {
             cardButton.GetComponent<Image>().sprite = clickableImage;
             if (showNumberWhenNormal)
             {
-                cardText.text = valueText;
+                cardText.text = show_data;
             } else
             {
                 cardText.text = "";
@@ -175,22 +185,13 @@ public class UICardButton : MonoBehaviour
                 gameObject.SetActive(true);
             }
         }
-        else if (m_cardStatus == CardStatus.SELECTED)
+        else // m_cardStatus == logic.CardStatus.SELECTED
         {
             cardButton.GetComponent<Image>().sprite = selectionImage;
-            cardText.text = valueText;
+            cardText.text = show_data;
             cardButton.interactable = false;
         }
-        else  // m_cardStatus == CardStatus.REMOVED
-        {
-            cardButton.GetComponent<Image>().sprite = backgroundImage;
-            cardText.text = "";
-            cardButton.interactable = false;
-            if (hideWhenRemoved)
-            {
-                gameObject.SetActive(false);
-            }
-        }
+
     }
 
     public void ClickCard()
@@ -199,7 +200,7 @@ public class UICardButton : MonoBehaviour
         {
             return;
         }
-        m_cardStatus = CardStatus.SELECTED;
+        cardData.cardStatus = logic.CardStatus.SELECTED;
         Refresh();
 
         LevelManager.Instance.FlipCard(cardId);

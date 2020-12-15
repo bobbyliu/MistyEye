@@ -24,15 +24,15 @@ namespace mgr
         private TimerState timerState = TimerState.STOPPED;
 
         public event Action onLoadLevelData;
-        public event Action<int/*cardId*/> onForceFlipBack;
-        public event Action<int/*cardId*/> onRemove;
         public event Action onClearLevel;
         public event Action onFinish;
         public event Action<string, logic.BoardRuleLogicBase.JudgeState> onUpdatePartialText;
 
+        // List of cards that are currently selected.
         private List<int> currentlyFlipped = new List<int>();
 
-        private List<List<int>> alreadyRemoved = new List<List<int>>();
+        // List of cards that are already removed, mentioned in groups. Used mainly for 
+        private List<List<int>> historicalModifyGroup = new List<List<int>>();
         public bool pendingCheck { get; private set; }  // True: some cards are flipped. Unable to take other clicks.
 
         // TODO: Where do we do this? 
@@ -45,7 +45,7 @@ namespace mgr
         {
             boardRuleLogic = null;
             levelData = null;
-            alreadyRemoved = new List<List<int>>();
+            historicalModifyGroup = new List<List<int>>();
             currentlyFlipped.Clear();
 
             isReady = false;
@@ -162,7 +162,7 @@ namespace mgr
             yield return new WaitForSeconds(0.25f);
             foreach (int cardId in currentlyFlipped)
             {
-                onForceFlipBack(cardId);
+                boardRuleLogic.cardDeck[cardId].cardStatus = logic.CardStatus.NORMAL;
             }
             currentlyFlipped.Clear();
             pendingCheck = false;
@@ -176,13 +176,13 @@ namespace mgr
             foreach (int cardId in currentlyFlipped)
             {
                 Debug.Log("OnRemove:" + cardId);
-                onRemove(cardId);
+                boardRuleLogic.cardDeck[cardId].ReduceCard();
             }
-            alreadyRemoved.Add(new List<int>(currentlyFlipped));
-            Debug.Log("OnRemoveA" + alreadyRemoved[alreadyRemoved.Count - 1].Count);
+            historicalModifyGroup.Add(new List<int>(currentlyFlipped));
+            Debug.Log("OnRemoveA" + historicalModifyGroup[historicalModifyGroup.Count - 1].Count);
             currentlyFlipped.Clear();
-            Debug.Log("OnRemoveA" + alreadyRemoved[alreadyRemoved.Count - 1].Count);
-            if (boardRuleLogic.CheckCompletion(alreadyRemoved))
+            Debug.Log("OnRemoveA" + historicalModifyGroup[historicalModifyGroup.Count - 1].Count);
+            if (boardRuleLogic.CheckCompletion(historicalModifyGroup))
             {
                 onFinish();
                 DataLoader.Instance.UpdateLevelProgress(levelId);
@@ -194,26 +194,25 @@ namespace mgr
         public void UndoRemove()
         {
             Debug.Log("UndoRemove");
-            if (alreadyRemoved.Count == 0)
+            if (historicalModifyGroup.Count == 0)
             {
                 return;
             }
-            Debug.Log(alreadyRemoved[alreadyRemoved.Count - 1].Count);
+            Debug.Log(historicalModifyGroup[historicalModifyGroup.Count - 1].Count);
             // Need to flip back the current temporary cards, if any.
             foreach (int cardId in currentlyFlipped)
             {
-                onForceFlipBack(cardId);
+                boardRuleLogic.cardDeck[cardId].cardStatus = logic.CardStatus.NORMAL;
             }
             currentlyFlipped.Clear();
             onUpdatePartialText("", logic.BoardRuleLogicBase.JudgeState.PENDING);
 
-            foreach (int cardId in alreadyRemoved[alreadyRemoved.Count - 1])
+            foreach (int cardId in historicalModifyGroup[historicalModifyGroup.Count - 1])
             {
                 Debug.Log("UndoRemove:" + cardId);
-                // Technically, undo remove and flip back is the same status.
-                onForceFlipBack(cardId);
+                boardRuleLogic.cardDeck[cardId].RevertCard();
             }
-            alreadyRemoved.RemoveAt(alreadyRemoved.Count - 1);
+            historicalModifyGroup.RemoveAt(historicalModifyGroup.Count - 1);
             boardRuleLogic.UndoRemove();
 
             pendingCheck = false;

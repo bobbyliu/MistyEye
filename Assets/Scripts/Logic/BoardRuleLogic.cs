@@ -25,12 +25,7 @@ namespace logic
             {
                 if (param[i] != 0)
                 {
-                    var new_card = new CardData {
-                        cardValue = param[i],
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"
-//                        imageName = param[i] + ".png"
-                    };
+                    var new_card = CardData.MaterialCard(param[i]);
 
                     Debug.Log("cardDeck.add " + param[i] + " at " + random_mapping[card_count]);
                     cardDeck[random_mapping[card_count]] = new_card;
@@ -129,13 +124,8 @@ namespace logic
 
             for (int card_count = 0; card_count < param.Count; card_count++)
             {
-                var new_card = new CardData
-                {
-                    cardValue = param[card_count],
-                    cardType = (card_count < materialCount) ? 
-                            CardData.CardType.MATERIAL : CardData.CardType.TARGET,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
+                var new_card = (card_count < materialCount) ?
+                    CardData.MaterialCard(param[card_count]) : CardData.TargetCard(param[card_count]);
 
                 if (card_count < materialCount)
                 {
@@ -185,6 +175,95 @@ namespace logic
         public override bool CheckCompletion(List<List<int>> already_removed)
         {
             return already_removed.Count == targetCount;
+        }
+    }
+
+    // Try the thing with dupe targets.
+    // Same with TargetMatchingLogic2, but allow dupe target cards.
+    public class TargetMatchingLogic2 : BoardRuleLogicBase
+    {
+        protected int target_count = 0;
+
+        public TargetMatchingLogic2(LevelData level_data)
+            : base(level_data)
+        { }
+
+        // TODO: mark abstract?
+        protected virtual int Calculate(List<int> materials)
+        {
+            if (materials.Count != 1)
+            {
+                return -1;  // TODO: check if we can return a status.
+            }
+            return materials[0];
+        }
+        protected virtual bool PrematureFail(List<int> materials)
+        {
+            return false;
+        }
+
+        // Generator param list: {material_list}, {target_list}
+        public override void Generator(List<int> param)
+        {
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(materialCount);
+
+            cardDeck = new List<logic.CardData>(new logic.CardData[targetCount + materialCount]);
+
+            for (int card_count = 0; card_count < param.Count; card_count++)
+            {
+                var new_card = (card_count < materialCount) ?
+                    CardData.MaterialCard(param[card_count]) : CardData.RepeatedTargetCard(param[card_count], param[card_count + 1]);
+
+                if (card_count < materialCount)
+                {
+                    Debug.Log("cardDeck.add " + param[card_count] + " at " + random_mapping[card_count]);
+                    cardDeck[random_mapping[card_count]] = new_card;
+                }
+                else
+                {
+                    Debug.Log("cardDeck.add " + param[card_count] + " at " + card_count);
+                    cardDeck[card_count] = new_card;
+                    target_count += param[card_count + 1];
+                    card_count++;
+                }
+            }
+        }
+
+        public override JudgeState JudgeAndFlip(List<int> cardsId)
+        {
+            var last_card = cardDeck[cardsId[cardsId.Count - 1]];
+            if (last_card.cardType != CardData.CardType.TARGET)
+            {
+                if (PrematureFail(cardsId.Select(id => cardDeck[id].cardValue).ToList()))
+                {
+                    return JudgeState.INVALID;
+                }
+                return JudgeState.PENDING;
+            }
+
+            // TODO: this copy is pointless. Change to passing cards or even original 
+            List<int> card_value_list = new List<int>(cardsId.Count - 1);
+            for (int i = 0; i < cardsId.Count - 1; i++)
+            {
+                card_value_list.Add(cardDeck[cardsId[i]].cardValue);
+            }
+            if (Calculate(card_value_list) == last_card.cardValue)
+            {
+                return JudgeState.VALID;
+            }
+            else
+            {
+                return JudgeState.INVALID;
+            }
+        }
+
+        public override void UndoRemove()
+        {
+        }
+
+        public override bool CheckCompletion(List<List<int>> already_removed)
+        {
+            return already_removed.Count == target_count;
         }
     }
 }

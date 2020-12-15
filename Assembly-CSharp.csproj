@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Fading.cs" />
     <Compile Include="Assets\Scripts\Logic\BoardRuleLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\BoardRuleLogicBase.cs" />
+    <Compile Include="Assets\Scripts\Logic\CardDataLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\CustomGeneratedBoardRuleLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\InfinityBoardRuleLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\SimpleTargetMatchingBoardRuleLogic.cs" />
@@ -140,6 +141,9 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Users/bobbyliu/Entertainment/Unity/MistyEye/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>C:/Users/bobbyliu/Entertainment/Unity/MistyEye/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Addressables">
       <HintPath>C:/Users/bobbyliu/Entertainment/Unity/MistyEye/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
     </Reference>
@@ -151,9 +155,6 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/bobbyliu/Entertainment/Unity/MistyEye/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>C:/Users/bobbyliu/Entertainment/Unity/MistyEye/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.7f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

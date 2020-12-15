@@ -59,8 +59,6 @@ public class UIBoard : MonoBehaviour
         {
             Destroy(uiCardButton.gameObject);
         }
-        LevelManager.Instance.onForceFlipBack -= ForceFlipBack;
-        LevelManager.Instance.onRemove -= RemoveCard;
         LevelManager.Instance.onFinish -= LoadFinishMenu;
         LevelManager.Instance.onUpdatePartialText -= UpdatePartialText;
     }
@@ -71,8 +69,6 @@ public class UIBoard : MonoBehaviour
         InitializeCanvas();
         InitializeEmptyButtons();
         LoadCardButtons();
-        LevelManager.Instance.onForceFlipBack += ForceFlipBack;
-        LevelManager.Instance.onRemove += RemoveCard;
         LevelManager.Instance.onFinish += LoadFinishMenu;
         LevelManager.Instance.onUpdatePartialText += UpdatePartialText;
 
@@ -85,15 +81,16 @@ public class UIBoard : MonoBehaviour
                 }
             };
 
+        UpdatePartialText("", logic.BoardRuleLogicBase.JudgeState.PENDING);
         StartCoroutine(RevealCountdown());
     }
 
     private IEnumerator RevealCountdown()
     {
         LevelManager.Instance.ResetTimer();
-        foreach (var card in uiCardButtons)
+        for (int i = 0; i < LevelManager.Instance.boardRuleLogic.cardDeck.Count; i++)
         {
-            card.cardStatus = UICardButton.CardStatus.SELECTED;
+            LevelManager.Instance.boardRuleLogic.cardDeck[i].cardStatus = logic.CardStatus.SELECTED;
         }
         revealCountdownTimer.gameObject.SetActive(true);
         revealCountdownTimer.text = "3";
@@ -103,22 +100,12 @@ public class UIBoard : MonoBehaviour
         revealCountdownTimer.text = "1";
         yield return new WaitForSecondsRealtime(1.0f);
         revealCountdownTimer.gameObject.SetActive(false);
-        foreach (var card in uiCardButtons)
+        for (int i = 0; i < LevelManager.Instance.boardRuleLogic.cardDeck.Count; i++)
         {
-            card.cardStatus = UICardButton.CardStatus.NORMAL;
+            LevelManager.Instance.boardRuleLogic.cardDeck[i].cardStatus = logic.CardStatus.NORMAL;
         }
         LevelManager.Instance.StartTimer();
         yield return 0;
-    }
-
-    void ForceFlipBack(int card_id)
-    {
-        uiCardButtons[card_id].cardStatus = UICardButton.CardStatus.NORMAL;
-    }
-
-    void RemoveCard(int card_id)
-    {
-        uiCardButtons[card_id].cardStatus = UICardButton.CardStatus.REMOVED;
     }
 
     // Update is called once per frame
@@ -244,10 +231,11 @@ public class UIBoard : MonoBehaviour
         int material_count = LevelManager.Instance.boardRuleLogic.materialCount;
         int col_count = LevelManager.Instance.boardRuleLogic.columnCount;
         int target_count = LevelManager.Instance.boardRuleLogic.targetCount;
-        Debug.Log("LoadCardButtons." + "material_count:" + material_count + "col_count:" + col_count);
+        Debug.Log("LoadCardButtons." + "material_count:" + material_count + "target_count:" + target_count + "col_count:" + col_count);
         for (int i = 0; i < material_count + target_count; i++)
         {
             // TODO: we only support 24 max stuff here. 
+            uiCardButtons[i].BindCardData(LevelManager.Instance.boardRuleLogic.cardDeck[i]);
             uiCardButtons[i].SetCardAndEnable(i);
         }
     }

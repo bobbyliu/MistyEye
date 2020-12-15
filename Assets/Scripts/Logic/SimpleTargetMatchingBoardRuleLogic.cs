@@ -54,7 +54,7 @@ namespace logic
             return false;
         }
     }
-    public class Sum2Logic : TargetMatchingLogic
+    public class Sum2Logic : TargetMatchingLogic2
     {
         public Sum2Logic(LevelData level_data)
             : base(level_data)

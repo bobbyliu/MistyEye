@@ -74,34 +74,19 @@ namespace logic
                 {
                     int temp = UnityEngine.Random.Range(1, 99);
                     partial_sum += temp;
-                    var new_card = new CardData
-                    {
-                        cardValue = temp,
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    var new_card = CardData.MaterialCard(temp);
                     Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
                     cardDeck[random_mapping[material_initialized]] = new_card;
                     material_initialized++;
                 }
-                var new_target = new CardData
-                {
-                    cardValue = partial_sum,
-                    cardType = CardData.CardType.TARGET,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
+                var new_target = CardData.TargetCard(partial_sum);
                 Debug.Log("cardDeck.add " + partial_sum + " at " + (material_count + i));
                 cardDeck[material_count + i] = new_target;
             }
             for (int j = material_initialized; j < material_count; j++)
             {
                 int temp = UnityEngine.Random.Range(1, 99);
-                var new_card = new CardData
-                {
-                    cardValue = temp,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
+                var new_card = CardData.MaterialCard(temp);
                 Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
                 cardDeck[random_mapping[material_initialized]] = new_card;
                 material_initialized++;
@@ -162,34 +147,19 @@ namespace logic
                 {
                     int temp = UnityEngine.Random.Range(1, 9);
                     partial_product *= temp;
-                    var new_card = new CardData
-                    {
-                        cardValue = temp,
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    var new_card = CardData.MaterialCard(temp);
                     Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
                     cardDeck[random_mapping[material_initialized]] = new_card;
                     material_initialized++;
                 }
-                var new_target = new CardData
-                {
-                    cardValue = partial_product,
-                    cardType = CardData.CardType.TARGET,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
+                var new_target = CardData.TargetCard(partial_product);
                 Debug.Log("cardDeck.add " + partial_product + " at " + (material_count + i));
                 cardDeck[material_count + i] = new_target;
             }
             for (int j = material_initialized; j < material_count; j++)
             {
                 int temp = UnityEngine.Random.Range(1, 9);
-                var new_card = new CardData
-                {
-                    cardValue = temp,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
+                var new_card = CardData.MaterialCard(temp);
                 Debug.Log("cardDeck.add " + temp + " at " + random_mapping[material_initialized]);
                 cardDeck[random_mapping[material_initialized]] = new_card;
                 material_initialized++;

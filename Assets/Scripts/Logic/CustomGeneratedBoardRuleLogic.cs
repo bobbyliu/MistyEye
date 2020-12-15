@@ -35,12 +35,7 @@ namespace logic
                 for (int card_id = 0; card_id < numberPerGroup; card_id++)
                 {
                     int card_value = (multiplier[card_id] + min_multiplier) * modBase + mod_group[group_id];
-                    var new_card = new CardData
-                    {
-                        cardValue = card_value,
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    var new_card = CardData.MaterialCard(card_value);
                     Debug.Log("cardDeck.add " + card_value + " at " + card_count);
                     cardDeck[random_mapping[card_count]] = new_card;
                     card_count++;
@@ -87,24 +82,9 @@ namespace logic
             for (int i = 0; i < targetCount; i++)
             {
                 int card_value = target_value_mapping[i] + min;
-                cardDeck[random_mapping[i * 2]] = new CardData
-                {
-                    cardValue = card_value % modBase,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
-                cardDeck[random_mapping[i * 2 + 1]] = new CardData
-                {
-                    cardValue = card_value / modBase,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
-                cardDeck[materialCount + i] = new CardData
-                {
-                    cardValue = card_value,
-                    cardType = CardData.CardType.TARGET,
-                    imageName = "TargetBase.png"  // TODO: ugh..
-                };
+                cardDeck[random_mapping[i * 2]] = CardData.MaterialCard(card_value % modBase);
+                cardDeck[random_mapping[i * 2 + 1]] = CardData.MaterialCard(card_value / modBase);
+                cardDeck[materialCount + i] = CardData.TargetCard(card_value);
             }
         }
         protected override int Calculate(List<int> materials)
@@ -148,20 +128,10 @@ namespace logic
             {
                 for (int j = 1; j <= step; j++)
                 {
-                    cardDeck[random_mapping[card_count]] = new CardData
-                    {
-                        cardValue = i - j,
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    cardDeck[random_mapping[card_count]] = CardData.MaterialCard(i - j);
                     card_count++;
                 }
-                cardDeck[materialCount + i - min] = new CardData
-                {
-                    cardValue = i,
-                    cardType = CardData.CardType.TARGET,
-                    imageName = "TargetBase.png"  // TODO: ugh..
-                };
+                cardDeck[materialCount + i - min] = CardData.TargetCard(i);
             }
         }
         protected override int Calculate(List<int> materials)
@@ -205,20 +175,10 @@ namespace logic
             {
                 for (int j = 0; j < i; j++)
                 {
-                    cardDeck[random_mapping[card_count]] = new CardData
-                    {
-                        cardValue = j,
-                        cardType = CardData.CardType.MATERIAL,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    cardDeck[random_mapping[card_count]] = CardData.MaterialCard(j);
                     card_count++;
                 }
-                cardDeck[materialCount + i - 1] = new CardData
-                {
-                    cardValue = i,
-                    cardType = CardData.CardType.TARGET,
-                    imageName = "TargetBase.png"  // TODO: ugh..
-                };
+                cardDeck[materialCount + i - 1] = CardData.TargetCard(i);
             }
         }
         protected override int Calculate(List<int> materials)
@@ -274,18 +234,8 @@ namespace logic
                 dupe.Add(main);
                 dupe.Add(reverse);
 
-                cardDeck[random_mapping[i * 2]] = new CardData
-                {
-                    cardValue = main,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
-                cardDeck[random_mapping[i * 2 + 1]] = new CardData
-                {
-                    cardValue = reverse,
-                    cardType = CardData.CardType.MATERIAL,
-                    imageName = "MaterialBase.png"  // TODO: ugh..
-                };
+                cardDeck[random_mapping[i * 2]] = CardData.MaterialCard(main);
+                cardDeck[random_mapping[i * 2 + 1]] = CardData.MaterialCard(reverse);
             }
         }
         public override JudgeState JudgeAndFlip(List<int> cardsId)
@@ -385,24 +335,9 @@ namespace logic
                         forbidden.Add(NumberCycle(item, group3));
                     }
 
-                    cardDeck[random_mapping[group_count * 3]] = new CardData
-                    {
-                        cardValue = main,
-                        cardType = CardData.CardType.MATERIAL_PUBLIC,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
-                    cardDeck[random_mapping[group_count * 3 + 1]] = new CardData
-                    {
-                        cardValue = group2,
-                        cardType = CardData.CardType.MATERIAL_PUBLIC,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
-                    cardDeck[random_mapping[group_count * 3 + 2]] = new CardData
-                    {
-                        cardValue = group3,
-                        cardType = CardData.CardType.MATERIAL_PUBLIC,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    cardDeck[random_mapping[group_count * 3]] = CardData.MaterialPublicCard(main);
+                    cardDeck[random_mapping[group_count * 3 + 1]] = CardData.MaterialPublicCard(group2);
+                    cardDeck[random_mapping[group_count * 3 + 2]] = CardData.MaterialPublicCard(group3);
                     group_count++;
                     if (group_count >= number_of_groups)
                     {
@@ -519,12 +454,7 @@ namespace logic
 
                 for (int j = 0; j < number_per_group; j++)
                 {
-                    cardDeck[random_mapping[i * number_per_group + j]] = new CardData
-                    {
-                        cardValue = assembled[j],
-                        cardType = CardData.CardType.MATERIAL_PUBLIC,
-                        imageName = "MaterialBase.png"  // TODO: ugh..
-                    };
+                    cardDeck[random_mapping[i * number_per_group + j]] = CardData.MaterialPublicCard(assembled[j]);
                     dupe.Add(assembled[j]);
                 }
             }
