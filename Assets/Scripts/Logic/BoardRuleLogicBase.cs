@@ -43,13 +43,25 @@ namespace logic
         {
             PENDING,
             VALID,
-            INVALID
+            INVALID,
+            SPECIAL
         }
 
         // Determine the matching status of cardsId
         public virtual JudgeState JudgeAndFlip(List<int> cardsId)
         {
             return JudgeState.VALID;
+        }
+        // TODO: is this universal?
+        public virtual void SpecialModify(List<int> cardsId)
+        {
+            if (cardDeck[cardsId[0]].cardType == CardData.CardType.MODIFIER &&
+                cardDeck[cardsId[0]].cardValue == 1)
+            {
+                cardDeck[cardsId[0]].ReduceCard();
+                cardDeck[cardsId[1]].ModifyCard(cardDeck[cardsId[1]].cardValue + 1);
+            }
+            return;
         }
         public virtual string GetPartialText(List<int> cardsId)
         {

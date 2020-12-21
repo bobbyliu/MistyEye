@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Logic\CardDataLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\CustomGeneratedBoardRuleLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\InfinityBoardRuleLogic.cs" />
+    <Compile Include="Assets\Scripts\Logic\ModifierBoardRuleLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\SimpleTargetMatchingBoardRuleLogic.cs" />
     <Compile Include="Assets\Scripts\Managers\Base\ManagerBase.cs" />
     <Compile Include="Assets\Scripts\Managers\GameGlobal.cs" />

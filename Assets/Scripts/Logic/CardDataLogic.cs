@@ -16,6 +16,7 @@ namespace logic
     public class CardData
     {
         public int cardValue;
+        public string showValue;
         public int remainingCount;
 
         public string clickableImageName;
@@ -26,7 +27,8 @@ namespace logic
             INVALID,
             MATERIAL,  // Material type, hidden -> show
             MATERIAL_PUBLIC,  // Material type, always show
-            TARGET  // Target type, always show
+            TARGET,  // Target type, always show
+            MODIFIER  // Modifier type like +1. Always show. Card value and 
         }
         public CardType cardType = CardType.INVALID;
 
@@ -72,6 +74,18 @@ namespace logic
             onRefresh();
             return;
         }
+        public void ModifyCard(int new_value)
+        {
+            cardValueHistory.Push(cardValue);
+            remainingCountHistory.Push(remainingCount);
+
+            cardValue = new_value;
+            showValue = new_value.ToString();
+            Debug.Log("ModifyCard=" + new_value);
+            cardStatus = CardStatus.NORMAL;
+            onRefresh();
+            return;
+        }
         public void RevertCard()
         {
             // Preset: History has size >= 1.
@@ -86,6 +100,7 @@ namespace logic
             return new CardData
             {
                 cardValue = cardValue,
+                showValue = cardValue.ToString(),
                 cardType = CardData.CardType.MATERIAL,
                 clickableImageName = "MaterialBase.png",
                 selectionImageName = "MaterialSelected.png",
@@ -98,6 +113,7 @@ namespace logic
             return new CardData
             {
                 cardValue = cardValue,
+                showValue = cardValue.ToString(),
                 cardType = CardData.CardType.MATERIAL_PUBLIC,
                 clickableImageName = "MaterialBase.png",
                 selectionImageName = "MaterialSelected.png",
@@ -110,6 +126,7 @@ namespace logic
             return new CardData
             {
                 cardValue = cardValue,
+                showValue = cardValue.ToString(),
                 cardType = CardData.CardType.TARGET,
                 clickableImageName = "TargetBase.png",
                 selectionImageName = "TargetBase.png",  // Hmm
@@ -122,7 +139,23 @@ namespace logic
             return new CardData
             {
                 cardValue = cardValue,
+                showValue = cardValue.ToString(),
                 cardType = CardData.CardType.TARGET,
+                clickableImageName = "TargetBase.png",
+                selectionImageName = "TargetBase.png",  // Hmm
+                showNumberWhenNormal = true,
+                remainingCount = repeat
+            };
+        }
+
+        // TODO: maybe this should be able to check all special cards.
+        public static CardData SpecialCardPlusOne(int repeat)
+        {
+            return new CardData
+            {
+                cardValue = 1,
+                showValue = "+1",
+                cardType = CardData.CardType.MODIFIER,
                 clickableImageName = "TargetBase.png",
                 selectionImageName = "TargetBase.png",  // Hmm
                 showNumberWhenNormal = true,

@@ -151,7 +151,12 @@ namespace mgr
             else if (status == logic.BoardRuleLogicBase.JudgeState.VALID)
             {
                 StartCoroutine(WaitAndRemove());
-            } else
+            }
+            else if (status == logic.BoardRuleLogicBase.JudgeState.SPECIAL)
+            {
+                StartCoroutine(WaitAndModify());
+            }
+            else
             {
                 pendingCheck = false;
             }
@@ -179,9 +184,23 @@ namespace mgr
                 boardRuleLogic.cardDeck[cardId].ReduceCard();
             }
             historicalModifyGroup.Add(new List<int>(currentlyFlipped));
-            Debug.Log("OnRemoveA" + historicalModifyGroup[historicalModifyGroup.Count - 1].Count);
             currentlyFlipped.Clear();
-            Debug.Log("OnRemoveA" + historicalModifyGroup[historicalModifyGroup.Count - 1].Count);
+            if (boardRuleLogic.CheckCompletion(historicalModifyGroup))
+            {
+                onFinish();
+                DataLoader.Instance.UpdateLevelProgress(levelId);
+            }
+            pendingCheck = false;
+            yield return 0;
+        }
+
+        IEnumerator WaitAndModify()
+        {
+            // remove cards
+            yield return new WaitForSeconds(0.25f);
+            boardRuleLogic.SpecialModify(currentlyFlipped);
+            historicalModifyGroup.Add(new List<int>(currentlyFlipped));
+            currentlyFlipped.Clear();
             if (boardRuleLogic.CheckCompletion(historicalModifyGroup))
             {
                 onFinish();

@@ -69,6 +69,10 @@ public class UILevelSelection : MonoBehaviour
 
         int min = 0;
         int max = Math.Min(DataLoader.Instance.levelList.levelCount, DataLoader.Instance.playerData.levelProgress + 1);
+        if (Debug.isDebugBuild)
+        {
+            max = DataLoader.Instance.levelList.levelCount;
+        }
         for (int i = min;  i < Math.Min(max, row_count * col_count); i++)
         {
             // TODO: we only support 24 max stuff here. 

@@ -101,7 +101,7 @@ public class UICardButton : MonoBehaviour
             return;
         }
 
-        string show_data = cardData.cardValue.ToString();
+        string show_data = cardData.showValue;
         if (cardData.remainingCount > 1)
         {
             show_data = string.Format("{0}({1})", show_data, cardData.remainingCount);
