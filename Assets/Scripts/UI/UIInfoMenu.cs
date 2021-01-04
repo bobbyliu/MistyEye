@@ -10,4 +10,10 @@ public class UIInfoMenu : MonoBehaviour
     {
         MenuManager.Instance.DestroyMenu();
     }
+    
+    public void SupportUs()
+    {
+        DataLoader.Instance.PurchaseSupport();
+        Debug.Log("Thank you for supporting us!");
+    }
 }

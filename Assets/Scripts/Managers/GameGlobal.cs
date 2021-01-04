@@ -17,7 +17,6 @@ namespace mgr
         {
             var mgrs = new List<MonoBehaviour>();
             // Add mgrs
-            mgrs.Add(CreateManager<SaveFile>());
             mgrs.Add(CreateManager<DataLoader>());
             mgrs.Add(CreateManager<LevelManager>());
             mgrs.Add(CreateManager<MenuManager>());

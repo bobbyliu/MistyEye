@@ -25,7 +25,8 @@ namespace mgr
     [Serializable]
     public class PlayerData
     {
-        public int levelProgress;
+        public int levelProgress = 0;
+        public int supportBuyTimes = 0;
     };
     public class DataLoader : ManagerBase<DataLoader>
     {
@@ -64,7 +65,9 @@ namespace mgr
                 {
                     Debug.Log("Load from persistent file failed.");
                     playerData = new PlayerData();
+                    // TODO: move to initializer function or default value.
                     playerData.levelProgress = 0;
+                    playerData.supportBuyTimes = 0;
                 }
                 file.Close();
             }
@@ -82,6 +85,12 @@ namespace mgr
                 playerData.levelProgress = levelId + 1;
                 Save();
             }
+        }
+
+        public void PurchaseSupport()
+        {
+            playerData.supportBuyTimes++;
+            Save();
         }
 
         // TODO: Where do we do this? 

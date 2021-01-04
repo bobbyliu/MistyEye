@@ -102,8 +102,10 @@ namespace logic
                 cardValue = cardValue,
                 showValue = cardValue.ToString(),
                 cardType = CardData.CardType.MATERIAL,
-                clickableImageName = "MaterialBase.png",
-                selectionImageName = "MaterialSelected.png",
+//                clickableImageName = "MaterialBase.png",
+                //                selectionImageName = "MaterialSelected.png",
+                clickableImageName = "card3.png",
+                selectionImageName = "card3.png",
                 showNumberWhenNormal = false,
                 remainingCount = 1
             };
