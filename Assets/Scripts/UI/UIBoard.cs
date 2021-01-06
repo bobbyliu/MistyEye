@@ -15,8 +15,11 @@ public class UIBoard : MonoBehaviour
     // TODO: change to private serializable?
     public UICardButton[] uiCardButtons;
 
+    // TODO: we might be able to remove the Background object ref by using 9-grid
+    public GameObject materialBackground;
     public GameObject materialBoard;
     public GridLayoutGroup materialLayoutGroup;
+    public GameObject targetBackground;
     public GameObject targetBoard;
     public GridLayoutGroup targetLayoutGroup;
     [SerializeField] [Tooltip("按键区域")] private GameObject textBoard;
@@ -132,24 +135,36 @@ public class UIBoard : MonoBehaviour
         else
         {
             // Portrait
+            int kBoarder = 10;
             if (target_count == 0)
             {
+                targetBackground.gameObject.SetActive(false);
                 targetLayoutGroup.gameObject.SetActive(false);
-                cardSize = Math.Min(max_width / (col_count + 1), max_height / (row_count + 2));
+                cardSize = Math.Min((max_width - 2 * kBoarder) / (col_count + 1), (max_height - 2 * kBoarder) / (row_count + 2));
                 cardGap = cardSize / 6;
-                float board_width = cardSize * col_count + cardGap * (col_count + 1);
-                float board_height = cardSize * (row_count + 1) + cardGap * (row_count + 3);
+                float board_width = cardSize * col_count + cardGap * (col_count + 1) + 2 * kBoarder;
+                float board_height = cardSize * (row_count + 1) + cardGap * (row_count + 3) + 2 * kBoarder;
                 this.GetComponent<RectTransform>().sizeDelta = new Vector2(board_width, board_height);
+
+                // TODO: maybe we can use 9-padding to fix this? 
+                materialBackground.gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(
+                    0,
+                    -(cardSize * (row_count + 1) + cardGap * (row_count + 4)) - 2*kBoarder);
+                materialBackground.gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(
+                    0,
+                    -(cardSize * 1 + cardGap * 3));
+
                 materialLayoutGroup.gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(
                     0,
-                    -(cardSize * (row_count + 1) + cardGap * (row_count + 4)));
+                    -(cardSize * (row_count + 1) + cardGap * (row_count + 4)) - 2 * kBoarder);
                 materialLayoutGroup.gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(
                     0,
                     -(cardSize * 1 + cardGap * 3));
                 materialLayoutGroup.cellSize = new Vector2(cardSize, cardSize);
                 materialLayoutGroup.spacing = new Vector2(cardGap, cardGap);
                 materialLayoutGroup.constraintCount = col_count;
-                materialLayoutGroup.padding = new RectOffset(cardGap, cardGap, cardGap, cardGap);
+                materialLayoutGroup.padding = new RectOffset(kBoarder + cardGap, kBoarder + cardGap, kBoarder + cardGap, kBoarder + cardGap);
+//                materialLayoutGroup.padding = new RectOffset(cardGap, cardGap, cardGap, cardGap);
 
                 textBoard.GetComponent<RectTransform>().offsetMin = new Vector2(
                     0,
@@ -159,37 +174,52 @@ public class UIBoard : MonoBehaviour
             else {
                 targetLayoutGroup.gameObject.SetActive(true);
 
-                cardSize = Math.Min(max_width / (col_count + 1), max_height / (row_count + target_row + 3));
+                cardSize = Math.Min((max_width - 2 * kBoarder) / (col_count + 1), (max_height - 4 * kBoarder) / (row_count + target_row + 4));
                 cardGap = cardSize / 6;
-                float board_width = cardSize * col_count + cardGap * (col_count + 1);
-                float board_height = cardSize * (row_count + target_row + 1) + cardGap * (row_count + target_row + 6);
+                float board_width = cardSize * col_count + cardGap * (col_count + 1) + 2 * kBoarder;
+                float board_height = cardSize * (row_count + target_row + 1) + cardGap * (row_count + target_row + 6) + 4 * kBoarder;
                 this.GetComponent<RectTransform>().sizeDelta = new Vector2(board_width, board_height);
+
+                materialBackground.gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(
+                    0,
+                    -(cardSize * (row_count + 1) + cardGap * (row_count + 4)) - 2*kBoarder);
+                materialBackground.gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(
+                    0,
+                    -(cardSize * 1 + cardGap * 3) + 0*kBoarder);
+
                 materialLayoutGroup.gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(
                     0,
-                    -(cardSize * (row_count + 1) + cardGap * (row_count + 4)));
+                    -(cardSize * (row_count + 1) + cardGap * (row_count + 4)) - 2*kBoarder);
                 materialLayoutGroup.gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(
                     0,
-                    -(cardSize * 1 + cardGap * 3));
+                    -(cardSize * 1 + cardGap * 3) + 0*kBoarder);
                 materialLayoutGroup.cellSize = new Vector2(cardSize, cardSize);
                 materialLayoutGroup.spacing = new Vector2(cardGap, cardGap);
                 materialLayoutGroup.constraintCount = col_count;
-                materialLayoutGroup.padding = new RectOffset(cardGap, cardGap, cardGap, cardGap);
+                materialLayoutGroup.padding = new RectOffset(kBoarder + cardGap, kBoarder + cardGap, kBoarder + cardGap, kBoarder + cardGap);
+                //                materialLayoutGroup.padding = new RectOffset(cardGap, cardGap, cardGap, cardGap);
 
                 textBoard.GetComponent<RectTransform>().offsetMin = new Vector2(
                     0,
                     -(cardSize * 1 + cardGap * 2));
                 partialText.fontSize = cardSize;
 
+                targetBackground.gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(
+                    0,
+                    0);
+                targetBackground.gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(
+                    0,
+                    cardSize * (target_row) + cardGap * (target_row + 1) + 2*kBoarder);
                 targetLayoutGroup.gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(
                     0,
                     0);
                 targetLayoutGroup.gameObject.GetComponent<RectTransform>().offsetMax = new Vector2(
                     0,
-                    cardSize * (target_row) + cardGap * (target_row + 1));
+                    cardSize * (target_row) + cardGap * (target_row + 1) + 2*kBoarder);
                 targetLayoutGroup.cellSize = new Vector2(cardSize, cardSize);
                 targetLayoutGroup.spacing = new Vector2(cardGap, cardGap);
                 targetLayoutGroup.constraintCount = col_count;
-                targetLayoutGroup.padding = new RectOffset(cardGap, cardGap, cardGap, cardGap);
+                targetLayoutGroup.padding = new RectOffset(kBoarder + cardGap, kBoarder + cardGap, kBoarder + cardGap, kBoarder + cardGap);
             }
         }
     }
