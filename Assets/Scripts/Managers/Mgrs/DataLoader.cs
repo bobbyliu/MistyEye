@@ -27,6 +27,7 @@ namespace mgr
     {
         public int levelProgress = 0;
         public int supportBuyTimes = 0;
+        public int currentTab = 0;
     };
     public class DataLoader : ManagerBase<DataLoader>
     {

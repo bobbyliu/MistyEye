@@ -1,4 +1,4 @@
-﻿using mgr;
+using mgr;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +7,17 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UILevelSelectionButton : MonoBehaviour
+public class UILevelSelectionTabButton : MonoBehaviour
 {
     private const string ASSET_PREFIX = "Assets/Data/Cards/";
     private Sprite lockedImage;
     private Sprite clickableImage;
-    public Button levelSelector;
+    public Button tabSelector;
+
+    // TODO: should this call be done from here or DataLoader?
+    public UILevelSelection levelSelectionUI;
     // Used to pass level loading status.
-    public int levelId { get; set; }
+    public int tabId { get; set; }
 
     private bool m_isSelectable;
     public bool isSelectable
@@ -27,8 +30,9 @@ public class UILevelSelectionButton : MonoBehaviour
         }
     }
 
-    public void SetLevelAndEnable(int level_id, string level_image) {
-        Addressables.LoadAssetAsync<Sprite>(ASSET_PREFIX + level_image).Completed +=
+    public void SetTabNumberAndEnable(int tab_id, string tab_image)
+    {
+        Addressables.LoadAssetAsync<Sprite>(ASSET_PREFIX + tab_image).Completed +=
             (AsyncOperationHandle<Sprite> handle) =>
             {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -38,12 +42,7 @@ public class UILevelSelectionButton : MonoBehaviour
                 }
             };
         m_isSelectable = true;
-        levelId = level_id;
-        Refresh();
-    }
-    public void DisableLevel()
-    {
-        m_isSelectable = false;
+        tabId = tab_id;
         Refresh();
     }
 
@@ -60,26 +59,26 @@ public class UILevelSelectionButton : MonoBehaviour
                 }
             };
 
-        levelSelector.onClick.AddListener(LoadLevel);
+        tabSelector.onClick.AddListener(ChangeTab);
     }
 
     void Refresh()
     {
         if (isSelectable)
         {
-            levelSelector.GetComponent<Image>().sprite = clickableImage;
-            levelSelector.interactable = true;
+            tabSelector.GetComponent<Image>().sprite = clickableImage;
+            tabSelector.interactable = true;
         }
         else
         {
-            levelSelector.GetComponent<Image>().sprite = lockedImage;
-            levelSelector.interactable = false;
+            tabSelector.GetComponent<Image>().sprite = lockedImage;
+            tabSelector.interactable = false;
         }
     }
 
-    public void LoadLevel()
+    public void ChangeTab()
     {
-        LevelManager.Instance.SetLevel(levelId);
-        SceneManager.LoadScene("Main");
+        DataLoader.Instance.playerData.currentTab = tabId;
+        levelSelectionUI.LoadLevelSelectionButtons();
     }
 }
