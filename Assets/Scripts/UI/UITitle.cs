@@ -10,6 +10,7 @@ public class UITitle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AssetPreLoad.PreloadAssets();
     }
 
     // Update is called once per frame
