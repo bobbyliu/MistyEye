@@ -79,6 +79,8 @@
     <Compile Include="Assets\Scripts\Managers\Base\ManagerBase.cs" />
     <Compile Include="Assets\Scripts\Logic\BoardRuleLogic.cs" />
     <Compile Include="Assets\Scripts\Logic\SimpleTargetMatchingBoardRuleLogic.cs" />
+    <Compile Include="Assets\Scripts\UI\UILevelSelectionTabButton.cs" />
+    <Compile Include="Assets\Scripts\Logic\AssetPreLoad.cs" />
     <Compile Include="Assets\Scripts\UI\UIBoardMenu.cs" />
     <Compile Include="Assets\Scripts\Common\Define.cs" />
     <Compile Include="Assets\Scripts\UI\UIBoard.cs" />
@@ -86,8 +88,6 @@
     <Compile Include="Assets\Scripts\UI\UILevelSelection.cs" />
     <Compile Include="Assets\Scripts\Managers\Mgrs\DataLoader.cs" />
     <Compile Include="Assets\Scripts\Common\Util\Singleton.cs" />
-    <Compile Include="Assets\Scripts\UI\UILevelSelectionTabButton.cs" />
-    <Compile Include="Assets\Scripts\Logic\AssetPreLoad.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />

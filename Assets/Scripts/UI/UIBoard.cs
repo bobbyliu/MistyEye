@@ -76,7 +76,8 @@ public class UIBoard : MonoBehaviour
         LevelManager.Instance.onUpdatePartialText += UpdatePartialText;
 
         Debug.Log("Loading rule image:" + LEVEL_RULE_ASSET_PREFIX + LevelManager.Instance.levelData.ruleImageName);
-        Addressables.LoadAssetAsync<Sprite>(LEVEL_RULE_ASSET_PREFIX + LevelManager.Instance.levelData.ruleImageName).Completed +=
+        Addressables.LoadAssetAsync<Sprite>(LEVEL_RULE_ASSET_PREFIX + "formula1.png") // LevelManager.Instance.levelData.ruleImageName)
+            .Completed +=
             (AsyncOperationHandle<Sprite> handle) => {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
