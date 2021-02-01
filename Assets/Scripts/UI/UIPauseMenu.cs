@@ -15,6 +15,7 @@ public class UIPauseMenu : MonoBehaviour
     public GameObject Congratulations;
     public GameObject Paused;
     public GameObject Timeout;
+    public GameObject Reload;
 
     public enum State
     {
@@ -50,6 +51,16 @@ public class UIPauseMenu : MonoBehaviour
         {
             NextLevel.SetActive(false);
         }
+        // Gauntlet style. Disable the "Reload". If it's last level, disable "Next level".
+        if (DataLoader.Instance.levelList.levelInfo[LevelManager.Instance.mainLevelId].levelType
+            == LevelInfo.LevelType.GAUNTLET)
+        {
+            Reload.SetActive(false);
+            if (LevelManager.Instance.nextLevels.Count == 0)
+            {
+                NextLevel.SetActive(false);
+            }
+        }
     }
 
     // Use this for initialization
@@ -57,6 +68,7 @@ public class UIPauseMenu : MonoBehaviour
     {
         //        master.CardsActive++;
         //        master.central_menu.SetActive(false);
+        LevelManager.Instance.nextLevels.Clear();
         LevelManager.Instance.ClearLevel();
         MenuManager.Instance.DestroyMenu();
         SceneManager.LoadScene("LevelSelection");
@@ -79,8 +91,18 @@ public class UIPauseMenu : MonoBehaviour
     {
         int current_level = LevelManager.Instance.levelId;
         LevelManager.Instance.ClearLevel();
-        LevelManager.Instance.SetLevel(current_level + 1);
-        LevelManager.Instance.LoadLevel();
+
+        int switchlevel = LevelManager.Instance.SwitchLevel();
+        // TODO: We might need another button here.
+        if (switchlevel == -1)
+        {
+            LevelManager.Instance.SetLevel(current_level + 1, true);
+            LevelManager.Instance.LoadLevel();
+        } else
+        {
+            LevelManager.Instance.SetLevel(switchlevel, false);
+            LevelManager.Instance.LoadLevel();
+        }
         MenuManager.Instance.DestroyMenu();
         //        master.CardsActive--;
         //        StartCoroutine(master.GameNext());

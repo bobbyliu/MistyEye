@@ -1,5 +1,5 @@
 {
-    "levelCount": 23,
+    "levelCount": 24,
     "levelInfo": [
         {"levelName": "Level1", "imageName": "level1.png"},
         {"levelName": "Level3", "imageName": "level3.png"},
@@ -24,6 +24,8 @@
         {"levelName": "Level11Hard", "imageName": "level11.png"},
         {"levelName": "Level12Hard", "imageName": "level12.png"},
         {"levelName": "Level5Modifier", "imageName": "level5.png"},
+        {"levelName": "Infinity", "imageName": "level5.png", "levelType": 2, 
+            "gauntletRange": [1,2]},
 
         {"levelName": "Level5", "imageName": "level5.png"},
         {"levelName": "RandomSum", "imageName": "level6.png"},

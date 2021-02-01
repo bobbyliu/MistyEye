@@ -92,6 +92,7 @@ namespace logic
 
     public class BoardRuleLogicUtil
     {
+        // Generate a random shuffle of [0, .., size - 1]. Only the first {step} items will be generated.
         public static int[] GetRandomShuffler(int size, int steps = -1)
         {
             int[] random_mapping = new int[size];

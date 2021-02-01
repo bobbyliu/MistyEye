@@ -91,7 +91,7 @@ public class UIBoard : MonoBehaviour
 
     private IEnumerator RevealCountdown()
     {
-        LevelManager.Instance.ResetTimer();
+//        LevelManager.Instance.ResetTimer();
         for (int i = 0; i < LevelManager.Instance.boardRuleLogic.cardDeck.Count; i++)
         {
             LevelManager.Instance.boardRuleLogic.cardDeck[i].cardStatus = logic.CardStatus.SELECTED;

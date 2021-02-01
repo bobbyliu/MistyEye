@@ -14,6 +14,14 @@ namespace mgr
     {
         public string levelName;
         public string imageName;
+
+        public enum LevelType
+        {
+            NORMAL = 1,
+            GAUNTLET = 2,
+        }
+        public LevelType levelType = LevelType.NORMAL;
+        public List<int> gauntletRange;
     }
     [Serializable]
     public class LevelList

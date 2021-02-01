@@ -1,4 +1,5 @@
-﻿using System;
+﻿using logic;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,10 @@ namespace mgr
 {
     public class LevelManager : ManagerBase<LevelManager>
     {
+        public int mainLevelId;
         public int levelId;
         public logic.LevelData levelData { get; private set; }
+        public Queue<int> nextLevels = new Queue<int>();
         public bool isReady { get; private set; }  // True: level data is loaded. Not sure if we still need it.
         public logic.BoardRuleLogicBase boardRuleLogic;
 
@@ -55,9 +58,24 @@ namespace mgr
             onClearLevel();
         }
 
-        public void SetLevel(int i)
+        public void SetInfinityLevel(List<int> range)
+        {
+            Debug.Log(range);
+            int[] random_mapping = BoardRuleLogicUtil.GetRandomShuffler(range.Count);
+            levelId = range[random_mapping[0]];
+            for (int i = 1; i < range.Count; i++)
+            {
+                nextLevels.Enqueue(range[random_mapping[i]]);
+            }
+            LevelManager.Instance.ResetTimer();
+        }
+        public void SetLevel(int i, bool reset_timer = true)
         {
             levelId = i;
+            if (reset_timer)
+            {
+                LevelManager.Instance.ResetTimer();
+            }
         }
 
         public void Update()
@@ -79,6 +97,15 @@ namespace mgr
             if (timerState == TimerState.PLUS)
             {
                 timer += Time.deltaTime;
+            }
+        }
+
+        public int SwitchLevel()
+        {
+            if (nextLevels.Count != 0) {
+                return nextLevels.Dequeue();
+            } else {
+                return -1;
             }
         }
 
@@ -111,7 +138,7 @@ namespace mgr
                 levelData = JsonUtility.FromJson<logic.LevelData>(handle.Result.text);
 
                 Type type = Type.GetType("logic." + levelData.boardRuleLogicName);
-                boardRuleLogic = (logic.BoardRuleLogicBase)System.Activator.CreateInstance(type, levelData);
+                boardRuleLogic = (logic.BoardRuleLogicBase)Activator.CreateInstance(type, levelData);
 
                 isReady = true;
                 // The texture is ready for use.
@@ -129,7 +156,6 @@ namespace mgr
         }
         public void StartTimer()
         {
-            timer = 0.0f;
             timerState = TimerState.PLUS;
         }
 
@@ -187,6 +213,7 @@ namespace mgr
             currentlyFlipped.Clear();
             if (boardRuleLogic.CheckCompletion(historicalModifyGroup))
             {
+                timerState = TimerState.STOPPED;
                 onFinish();
                 DataLoader.Instance.UpdateLevelProgress(levelId);
             }
@@ -203,6 +230,7 @@ namespace mgr
             currentlyFlipped.Clear();
             if (boardRuleLogic.CheckCompletion(historicalModifyGroup))
             {
+                timerState = TimerState.STOPPED;
                 onFinish();
                 DataLoader.Instance.UpdateLevelProgress(levelId);
             }

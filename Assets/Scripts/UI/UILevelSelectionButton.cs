@@ -79,7 +79,16 @@ public class UILevelSelectionButton : MonoBehaviour
 
     public void LoadLevel()
     {
-        LevelManager.Instance.SetLevel(levelId);
+        LevelManager.Instance.mainLevelId = levelId;
+        if (DataLoader.Instance.levelList.levelInfo[levelId].levelType == LevelInfo.LevelType.GAUNTLET)
+        {
+            LevelManager.Instance.SetInfinityLevel(
+                DataLoader.Instance.levelList.levelInfo[levelId].gauntletRange);
+        }
+        else
+        {
+            LevelManager.Instance.SetLevel(levelId);
+        }
         SceneManager.LoadScene("Main");
     }
 }
