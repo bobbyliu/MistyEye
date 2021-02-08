@@ -22,6 +22,14 @@ namespace mgr
         }
         public LevelType levelType = LevelType.NORMAL;
         public List<int> gauntletRange;
+
+        public enum TimerType {
+            NONE = 0,
+            COUNTDOWN = 1,
+            COUNTUP = 2,
+        }
+        public TimerType timerType = TimerType.NONE;
+        public int initialTimer = 0;
     }
     [Serializable]
     public class LevelList

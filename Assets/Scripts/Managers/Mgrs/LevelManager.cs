@@ -21,14 +21,14 @@ namespace mgr
         private enum TimerState
         {
             STOPPED,
-            PLUS,
-            MINUS
+            GO,
         }
         private TimerState timerState = TimerState.STOPPED;
 
         public event Action onLoadLevelData;
         public event Action onClearLevel;
         public event Action onFinish;
+        public event Action onFail;
         public event Action<string, logic.BoardRuleLogicBase.JudgeState> onUpdatePartialText;
 
         // List of cards that are currently selected.
@@ -67,20 +67,27 @@ namespace mgr
             {
                 nextLevels.Enqueue(range[random_mapping[i]]);
             }
-            LevelManager.Instance.ResetTimer();
         }
-        public void SetLevel(int i, bool reset_timer = true)
+        public void SetLevel(int i)
         {
             levelId = i;
-            if (reset_timer)
-            {
-                LevelManager.Instance.ResetTimer();
-            }
+        }
+        public void SetMainLevel(int i)
+        {
+            mainLevelId = i;
         }
 
         public void Update()
         {
-            if (timerState == TimerState.MINUS)
+            if (timerState == TimerState.STOPPED)
+            {
+                return;
+            }
+            var timerType = DataLoader.Instance.levelList.levelInfo[mainLevelId].timerType;
+            if (timerType == LevelInfo.TimerType.NONE)
+            {
+                return;
+            } else if (timerType == LevelInfo.TimerType.COUNTDOWN)
             {
                 if (timer > 0)
                 {
@@ -92,9 +99,9 @@ namespace mgr
                     timer = 0;
                     timerState = TimerState.STOPPED;
                     // TODO: add timeout alert.
+                    onFail();
                 }
-            }
-            if (timerState == TimerState.PLUS)
+            } else if (timerType == LevelInfo.TimerType.COUNTUP)
             {
                 timer += Time.deltaTime;
             }
@@ -111,9 +118,14 @@ namespace mgr
 
         public string GetCurrentTimer()
         {
+            if (DataLoader.Instance.levelList.levelInfo[mainLevelId].timerType == LevelInfo.TimerType.NONE)
+            {
+                return "";
+            }
+
             if (timer == 0)
             {
-                return "0:00";
+                return "00:00";
             }
             float minutes = Mathf.FloorToInt((timer+1) / 60);
             float seconds = Mathf.FloorToInt((timer+1) % 60);
@@ -152,11 +164,11 @@ namespace mgr
 
         public void ResetTimer()
         {
-            timer = 0.0f;
+            timer = DataLoader.Instance.levelList.levelInfo[mainLevelId].initialTimer;
         }
         public void StartTimer()
         {
-            timerState = TimerState.PLUS;
+            timerState = TimerState.GO;
         }
 
         public void FlipCard(int card_id)
@@ -221,6 +233,7 @@ namespace mgr
             yield return 0;
         }
 
+        // TODO: very similar to WaitAndRemove. Maybe merge?
         IEnumerator WaitAndModify()
         {
             // remove cards

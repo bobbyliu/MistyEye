@@ -63,6 +63,7 @@ public class UIBoard : MonoBehaviour
             Destroy(uiCardButton.gameObject);
         }
         LevelManager.Instance.onFinish -= LoadFinishMenu;
+        LevelManager.Instance.onFail -= LoadFailMenu;
         LevelManager.Instance.onUpdatePartialText -= UpdatePartialText;
     }
 
@@ -73,6 +74,7 @@ public class UIBoard : MonoBehaviour
         InitializeEmptyButtons();
         LoadCardButtons();
         LevelManager.Instance.onFinish += LoadFinishMenu;
+        LevelManager.Instance.onFail += LoadFailMenu;
         LevelManager.Instance.onUpdatePartialText += UpdatePartialText;
 
         Debug.Log("Loading rule image:" + LEVEL_RULE_ASSET_PREFIX + LevelManager.Instance.levelData.ruleImageName);
@@ -296,5 +298,11 @@ public class UIBoard : MonoBehaviour
     {
         MenuManager.Instance.CreateMenu(background, "pause_menu");
         MenuManager.Instance.currentMenu.GetComponent<UIPauseMenu>().SetState(UIPauseMenu.State.SUCCESS);
+    }
+
+    void LoadFailMenu()
+    {
+        MenuManager.Instance.CreateMenu(background, "pause_menu");
+        MenuManager.Instance.currentMenu.GetComponent<UIPauseMenu>().SetState(UIPauseMenu.State.FAIL);
     }
 }

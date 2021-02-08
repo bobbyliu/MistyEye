@@ -89,6 +89,7 @@ public class UILevelSelectionButton : MonoBehaviour
         {
             LevelManager.Instance.SetLevel(levelId);
         }
+        LevelManager.Instance.ResetTimer();
         SceneManager.LoadScene("Main");
     }
 }

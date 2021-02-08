@@ -46,8 +46,13 @@ public class UIPauseMenu : MonoBehaviour
         {
             Timeout.SetActive(true);
         }
-        // Last level. Disable the "Next level".
-        if (LevelManager.Instance.levelId == DataLoader.Instance.levelList.levelCount - 1)
+        // Last level. Disable the "Next level".      
+        if (LevelManager.Instance.mainLevelId == DataLoader.Instance.levelList.levelCount - 1)
+        {
+            NextLevel.SetActive(false);
+        }
+        if (DataLoader.Instance.levelList.levelInfo[LevelManager.Instance.mainLevelId + 1].levelType
+            == LevelInfo.LevelType.GAUNTLET)
         {
             NextLevel.SetActive(false);
         }
@@ -59,6 +64,9 @@ public class UIPauseMenu : MonoBehaviour
             if (LevelManager.Instance.nextLevels.Count == 0)
             {
                 NextLevel.SetActive(false);
+            } else
+            {
+                NextLevel.SetActive(true);
             }
         }
     }
@@ -79,6 +87,7 @@ public class UIPauseMenu : MonoBehaviour
         int current_level = LevelManager.Instance.levelId;
         LevelManager.Instance.ClearLevel();
         LevelManager.Instance.SetLevel(current_level);
+        LevelManager.Instance.ResetTimer();
         LevelManager.Instance.LoadLevel();
         MenuManager.Instance.DestroyMenu();
 
@@ -96,11 +105,14 @@ public class UIPauseMenu : MonoBehaviour
         // TODO: We might need another button here.
         if (switchlevel == -1)
         {
-            LevelManager.Instance.SetLevel(current_level + 1, true);
+            LevelManager.Instance.SetLevel(current_level + 1);
+            LevelManager.Instance.SetMainLevel(current_level + 1);
             LevelManager.Instance.LoadLevel();
-        } else
+            LevelManager.Instance.ResetTimer();
+        }
+        else
         {
-            LevelManager.Instance.SetLevel(switchlevel, false);
+            LevelManager.Instance.SetLevel(switchlevel);
             LevelManager.Instance.LoadLevel();
         }
         MenuManager.Instance.DestroyMenu();
