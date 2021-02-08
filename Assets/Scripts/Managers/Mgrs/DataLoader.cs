@@ -29,7 +29,7 @@ namespace mgr
             COUNTUP = 2,
         }
         public TimerType timerType = TimerType.NONE;
-        public int initialTimer = 0;
+        public float initialTimer = 0;
     }
     [Serializable]
     public class LevelList

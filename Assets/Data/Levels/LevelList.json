@@ -3,7 +3,7 @@
     "levelInfo": [
         {"levelName": "Level1", "imageName": "level1.png", "timerType": 2, "initialTimer": 0},
         {"levelName": "Level3", "imageName": "level3.png", "timerType": 2, "initialTimer": 0},
-        {"levelName": "Level4", "imageName": "level4.png", "timerType": 1, "initialTimer": 10},
+        {"levelName": "Level4", "imageName": "level4.png", "timerType": 1, "initialTimer": 9.999},
         {"levelName": "Level5", "imageName": "level5.png"},
         {"levelName": "Level6", "imageName": "level6.png"},
         {"levelName": "Level7", "imageName": "level7.png"},
@@ -25,7 +25,7 @@
         {"levelName": "Level12Hard", "imageName": "level12.png"},
         {"levelName": "Level5Modifier", "imageName": "level5.png"},
         {"levelName": "Infinity", "imageName": "level5.png", "levelType": 2, 
-            "gauntletRange": [1,2], "timerType": 1, "initialTimer": 30},
+            "gauntletRange": [1,2], "timerType": 1, "initialTimer": 29.999},
 
         {"levelName": "Level5", "imageName": "level5.png"},
         {"levelName": "RandomSum", "imageName": "level6.png"},
