@@ -1,11 +1,9 @@
 {
     "columnCount": 4,
     "materialCount": 12,
-    "targetCount": 4,
-    "deckGeneratorParams": [
-        1,1,12,1,2,6,1,3,4,2,2,3,
-        12,12,12,12],
-    "boardRuleLogicName": "Product3Logic",
+    "targetCount": 1,
+    "deckGeneratorParams": [],
+    "boardRuleLogicName": "L05MultiplyBoardRuleLogicEasy",
     "ruleImageName": "formula5.png",
     "backgroundImagePrefix": ""
 }

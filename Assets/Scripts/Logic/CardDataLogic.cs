@@ -101,12 +101,12 @@ namespace logic
             {
                 cardValue = cardValue,
                 showValue = cardValue.ToString(),
-                cardType = CardData.CardType.MATERIAL_PUBLIC,
+                cardType = CardData.CardType.MATERIAL,
                 //                clickableImageName = "MaterialBase.png",
                 //                selectionImageName = "MaterialSelected.png",
                 clickableImageName = "card3.png",
                 selectionImageName = "card3.png",
-                showNumberWhenNormal = true,
+                showNumberWhenNormal = false,
                 remainingCount = 1
             };
         }

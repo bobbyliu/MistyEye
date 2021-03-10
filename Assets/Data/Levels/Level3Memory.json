@@ -1,8 +1,8 @@
 {
-    "materialCount": 12,
+    "materialCount": 15,
     "columnCount": 3,
     "deckGeneratorParams": [],
-    "boardRuleLogicName": "L01SameBoardRuleLogicEasy",
+    "boardRuleLogicName": "L03SameLadderBoardRuleLogicMemory",
     "ruleImageName": "formula1.png",
     "backgroundImagePrefix": ""
 }

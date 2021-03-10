@@ -2,7 +2,7 @@
     "materialCount": 12,
     "columnCount": 3,
     "deckGeneratorParams": [],
-    "boardRuleLogicName": "L01SameBoardRuleLogicEasy",
+    "boardRuleLogicName": "L01SameBoardRuleLogicMemory",
     "ruleImageName": "formula1.png",
     "backgroundImagePrefix": ""
 }

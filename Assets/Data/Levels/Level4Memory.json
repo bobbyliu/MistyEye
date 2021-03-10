@@ -3,7 +3,7 @@
     "materialCount": 12,
     "targetCount": 1,
     "deckGeneratorParams": [],
-    "boardRuleLogicName": "L04SumBoardRuleLogicEasy",
-    "ruleImageName": "formula4.png",
+    "boardRuleLogicName": "L04SumBoardRuleLogicMemory",
+    "ruleImageName": "formula4Hard.png",
     "backgroundImagePrefix": ""
 }
